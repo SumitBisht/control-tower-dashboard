@@ -7,6 +7,8 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminWidgets from "./pages/AdminWidgets";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import PreShipmentDashboard from "./pages/PreShipmentDashboard";
+import ProductionDashboard from "./pages/ProductionDashboard";
 import Reports from "./pages/Reports";
 import Uploads from "./pages/Uploads";
 
@@ -24,6 +26,8 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route element={<Guard><Layout /></Guard>}>
         <Route index element={<Dashboard />} />
+        <Route path="production" element={<ProductionDashboard />} />
+        <Route path="preshipment" element={<PreShipmentDashboard />} />
         <Route path="reports" element={<Reports />} />
         <Route path="uploads" element={<Guard roles={["uploader", "admin"]}><Uploads /></Guard>} />
         <Route path="admin/users" element={<Guard roles={["admin"]}><AdminUsers /></Guard>} />

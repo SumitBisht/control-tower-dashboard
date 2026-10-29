@@ -19,10 +19,11 @@ from docx.table import Table
 from docx.text.paragraph import Paragraph
 
 from ..base import Issue, ParseResult
+from ..docx_utils import (clean, is_blank, iter_blocks, kv_get, kv_of, norm_key, parse_date, parse_dims,  # noqa: F401
+                          parse_float, parse_int, row_cells, strip_colon)
 
 MAX_CONTAINERS = 5000
 MAX_PHOTO_BYTES = 8 * 1024 * 1024
-DATE_FORMATS = ("%d.%m.%Y %H:%M", "%d-%m-%Y %H:%M", "%d.%m.%Y", "%d-%m-%Y", "%d/%m/%Y", "%d-%b-%Y", "%d-%B-%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d")
 
 CHECKLIST_FIELDS = {  # output key -> label prefix in "Summary of Inspection"
     "weather": "weather conditions",
@@ -49,48 +50,6 @@ CONTAINER_COLUMNS = {  # field -> predicate on normalised header text
 REQUIRED_COLUMNS = ("containerNo", "modelCode", "nominalPowerWp", "moduleQty", "loadingDate")
 
 
-# ---------- small helpers ----------
-def clean(s: str | None) -> str:
-    return re.sub(r"\s+", " ", (s or "").replace("\xa0", " ")).strip()
-
-
-def norm_key(s: str) -> str:
-    return re.sub(r"[^a-z0-9]+", " ", (s or "").lower()).strip()
-
-
-def is_blank(s: str) -> bool:
-    return not s or bool(re.fullmatch(r"x+", s.strip().lower()))
-
-
-def strip_colon(s: str) -> str:
-    return clean(re.sub(r"^\s*:\s*", "", s or ""))
-
-
-def parse_date(s: str) -> datetime | None:
-    s = clean(s)
-    for f in DATE_FORMATS:
-        try:
-            return datetime.strptime(s, f)
-        except ValueError:
-            pass
-    return None
-
-
-def parse_int(s: str) -> int | None:
-    m = re.search(r"-?\d[\d,]*", s or "")
-    return int(m.group().replace(",", "")) if m else None
-
-
-def parse_float(s: str) -> float | None:
-    m = re.search(r"-?\d[\d,]*\.?\d*", s or "")
-    return float(m.group().replace(",", "")) if m else None
-
-
-def parse_dims(s: str) -> list[float] | None:
-    parts = re.findall(r"\d+(?:\.\d+)?", s or "")
-    return [float(p) for p in parts[:3]] if len(parts) >= 3 else None
-
-
 def status_of(s: str, item: str) -> str:
     """Normalise a checklist cell to OK / NOK / NA, or '?' if unrecognised."""
     v = norm_key(s)
@@ -103,40 +62,6 @@ def status_of(s: str, item: str) -> str:
     if v == "no" and item == "shockLabel":  # "Shock Label Validations (if applicable): No" => not applicable
         return "NA"
     return "?"
-
-
-def row_cells(row) -> list[str]:
-    return [clean(c.text) for c in row.cells]
-
-
-def kv_of(table: Table) -> dict[str, str]:
-    """Flatten label|value|label|value rows into {normalised label: value}."""
-    out: dict[str, str] = {}
-    for row in table.rows:
-        cells, seen, uniq = row.cells, set(), []
-        for c in cells:
-            if id(c._tc) not in seen:
-                seen.add(id(c._tc))
-                uniq.append(clean(c.text))
-        for i in range(0, len(uniq) - 1, 2):
-            if uniq[i]:
-                out.setdefault(norm_key(uniq[i]), strip_colon(uniq[i + 1]))
-    return out
-
-
-def kv_get(kv: dict[str, str], prefix: str) -> str | None:
-    for k, v in kv.items():
-        if k.startswith(prefix):
-            return v
-    return None
-
-
-def iter_blocks(doc):
-    for el in doc.element.body.iterchildren():
-        if el.tag.endswith("}p"):
-            yield Paragraph(el, doc)
-        elif el.tag.endswith("}tbl"):
-            yield Table(el, doc)
 
 
 # ---------- container table ----------

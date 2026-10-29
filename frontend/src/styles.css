@@ -80,3 +80,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .topbar .title { padding-left: 5%; padding-right: 5%;}
 .client { flex: 1; font-weight: 700; color: var(--navy-2); place-items: center; }
 .topbar .client { padding-left: 5%; padding-right: 5%;}
+.inline-select { display: inline-flex; align-items: center; gap: 10px; font-weight: 600; font-size: 13px; margin-bottom: 12px; }
+.pill.warn { background: #fbefd1; color: var(--warn); }
+.filters input[type="date"] { border: 0; font-size: 14px; padding: 4px 0; background: transparent; }
+.row { margin-bottom: 16px; }

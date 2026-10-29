@@ -1,6 +1,10 @@
 import { useQuery } from "@tanstack/react-query";
 import { FormEvent, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { api, download, ReportRow } from "../api";
+import { MODULES } from "../modules";
+import PreShipmentReports from "./PreShipmentReports";
+import ProductionReports from "./ProductionReports";
 
 const MODULE = "container_loading";
 const EMPTY = { date_from: "", date_to: "", spv: "", project: "", manufacturer: "", model: "", psi_lot: "", q: "" };
@@ -8,7 +12,7 @@ type Filters = typeof EMPTY;
 
 const qs = (f: Filters) => new URLSearchParams(Object.entries(f).filter(([, v]) => v && v !== "All")).toString();
 
-export default function Reports() {
+function ContainerReports() {
   const [form, setForm] = useState<Filters>(EMPTY);
   const [applied, setApplied] = useState<Filters>(EMPTY);
   const [msg, setMsg] = useState<string | null>(null);
@@ -34,7 +38,6 @@ export default function Reports() {
 
   return (
     <div>
-      <h2>Reports</h2>
       <form className="card" onSubmit={search}>
         <div className="form-row">
           <label>Loaded from<input type="date" value={form.date_from} max={form.date_to || undefined} onChange={set("date_from")} /></label>
@@ -88,6 +91,20 @@ export default function Reports() {
         </tbody>
       </table>
       {res.data && <p className="muted">{res.data.total} report(s)</p>}
+    </div>
+  );
+}
+
+export default function Reports() {
+  const [params, setParams] = useSearchParams();
+  const key = params.get("module") ?? MODULES[0].key;
+  return (
+    <div>
+      <h2>Report Master</h2>
+      <label className="inline-select">Report type
+        <select value={key} onChange={(e) => setParams({ module: e.target.value })}>{MODULES.map((m) => <option key={m.key} value={m.key}>{m.title}</option>)}</select>
+      </label>
+      {key === "production_supervision" ? <ProductionReports /> : key === "pre_shipment" ? <PreShipmentReports /> : <ContainerReports />}
     </div>
   );
 }

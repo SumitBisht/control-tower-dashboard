@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { FormEvent, useEffect, useRef, useState } from "react";
 import { api, Upload } from "../api";
 import { useAuth } from "../auth";
+import { MODULES, moduleByKey } from "../modules";
 
 const MAX_MB = 250;
 
@@ -10,7 +11,7 @@ function LogView({ u }: { u: Upload }) {
     <div className="log">
       <div className={`log-head ${u.status.toLowerCase()}`}>
         <b>{u.fileName}</b> — {u.status.replace(/_/g, " ")}
-        {u.summary && <span> · {u.summary.containers} containers, {u.summary.modules?.toLocaleString()} modules</span>}
+        {u.summary && <span> · {u.summary.label ?? `${u.summary.containers} containers, ${u.summary.modules?.toLocaleString()} modules`}</span>}
       </div>
       {u.status === "PROCESSING" && <div className="log-line"><span>Processing… this can take a minute for reports with many photos.</span></div>}
       {(u.logs ?? []).map((l, i) => (
@@ -29,6 +30,7 @@ export default function Uploads() {
   const qc = useQueryClient();
   const fileRef = useRef<HTMLInputElement>(null);
   const [file, setFile] = useState<File | null>(null);
+  const [moduleKey, setModuleKey] = useState(MODULES[0].key);
   const [spv, setSpv] = useState("");
   const [project, setProject] = useState("");
   const [replace, setReplace] = useState(false);
@@ -49,6 +51,12 @@ export default function Uploads() {
     qc.invalidateQueries({ queryKey: ["dashboard"] });
     qc.invalidateQueries({ queryKey: ["filters"] });
     qc.invalidateQueries({ queryKey: ["reports"] });
+    qc.invalidateQueries({ queryKey: ["ps-dashboard"] });
+    qc.invalidateQueries({ queryKey: ["ps-filters"] });
+    qc.invalidateQueries({ queryKey: ["ps-reports"] });
+    qc.invalidateQueries({ queryKey: ["psi-dashboard"] });
+    qc.invalidateQueries({ queryKey: ["psi-filters"] });
+    qc.invalidateQueries({ queryKey: ["psi-reports"] });
     if (result.status !== "FAILED") { setFile(null); if (fileRef.current) fileRef.current.value = ""; }
   }, [result?.status]); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -64,6 +72,7 @@ export default function Uploads() {
     mutationFn: () => {
       const form = new FormData();
       form.append("file", file!);
+      form.append("module", moduleKey);
       form.append("spv_name", spv);
       form.append("project_name", project);
       form.append("replace", String(replace));
@@ -89,10 +98,13 @@ export default function Uploads() {
           onDragOver={(e) => e.preventDefault()}
           onDrop={(e) => { e.preventDefault(); pick(e.dataTransfer.files[0] ?? null); }}
           onClick={() => fileRef.current?.click()}>
-          {file ? <><b>{file.name}</b> ({(file.size / 1024).toFixed(0)} KB)</> : "Drop the DSR Container Loading Monitoring report (.docx) here, or click to browse"}
+          {file ? <><b>{file.name}</b> ({(file.size / 1024).toFixed(0)} KB)</> : `Drop the DSR ${moduleByKey(moduleKey).title} report (.docx) here, or click to browse`}
           <input ref={fileRef} type="file" accept=".docx" hidden onChange={(e) => pick(e.target.files?.[0] ?? null)} />
         </div>
         <div className="form-row">
+          <label>Report type
+            <select value={moduleKey} onChange={(e) => { setModuleKey(e.target.value); setActiveId(null); }}>
+              {MODULES.map((m) => <option key={m.key} value={m.key}>{m.title}</option>)}</select></label>
           <label>SPV name <small>(optional — defaults to the configured client name)</small>
             <input value={spv} onChange={(e) => setSpv(e.target.value)} /></label>
           <label>Project name <small>(optional — defaults to the report location)</small>
@@ -107,18 +119,18 @@ export default function Uploads() {
 
       <h2>Upload history</h2>
       <table className="grid">
-        <thead><tr><th>When</th><th>File</th><th>By</th><th>Status</th><th>Errors</th><th>Warnings</th><th /></tr></thead>
+        <thead><tr><th>When</th><th>Type</th><th>File</th><th>By</th><th>Status</th><th>Errors</th><th>Warnings</th><th /></tr></thead>
         <tbody>
           {(history.data ?? []).map((u) => (
             <tr key={u.id}>
-              <td>{new Date(u.uploadedAt).toLocaleString()}</td><td>{u.fileName}</td><td>{u.uploadedBy}</td>
+              <td>{new Date(u.uploadedAt).toLocaleString()}</td><td>{moduleByKey(u.module).title}</td><td>{u.fileName}</td><td>{u.uploadedBy}</td>
               <td><span className={`pill st-${u.status.toLowerCase()}`}>{u.status.replace(/_/g, " ")}</span></td>
               <td>{u.counts.ERROR}</td><td>{u.counts.WARNING}</td>
               <td className="actions"><button className="link" onClick={() => view(u.id)}>View log</button>
                 {user?.role === "admin" && <button className="link danger" onClick={() => del(u.id)}>Delete</button>}</td>
             </tr>
           ))}
-          {history.data?.length === 0 && <tr><td colSpan={7} className="empty">No uploads yet.</td></tr>}
+          {history.data?.length === 0 && <tr><td colSpan={8} className="empty">No uploads yet.</td></tr>}
         </tbody>
       </table>
     </div>

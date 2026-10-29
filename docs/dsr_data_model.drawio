@@ -1,0 +1,350 @@
+<mxfile host="app.diagrams.net" pages="4">
+  <diagram name="Relational ER" id="p1">
+    <mxGraphModel dx="1493" dy="955" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="t_report_upload" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="report_upload" vertex="1">
+          <mxGeometry height="150" width="250" x="40" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_0" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="upload_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_1" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="file_name" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_2" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="file_hash  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_3" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="uploaded_at" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_4" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="uploaded_by" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_upload_5" parent="t_report_upload" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="parse_status" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="dsr_report" vertex="1">
+          <mxGeometry height="230" width="250" x="340" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_0" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="report_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_1" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="report_no  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_2" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="report_date" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_3" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="project_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_4" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="manufacturer_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_5" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="upload_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_6" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="location" vertex="1">
+          <mxGeometry height="20" width="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_7" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="workshop" vertex="1">
+          <mxGeometry height="20" width="250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_8" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="conclusion  (PASS/FAIL)" vertex="1">
+          <mxGeometry height="20" width="250" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="t_dsr_report_9" parent="t_dsr_report" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="created_at" vertex="1">
+          <mxGeometry height="20" width="250" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="t_manufacturer" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="manufacturer" vertex="1">
+          <mxGeometry height="70" width="250" x="640" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_manufacturer_0" parent="t_manufacturer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="manufacturer_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_manufacturer_1" parent="t_manufacturer" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="name  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="report_signatory" vertex="1">
+          <mxGeometry height="130" width="250" x="40" y="380" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory_0" parent="t_report_signatory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="signatory_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory_1" parent="t_report_signatory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="report_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory_2" parent="t_report_signatory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="role  (PREPARED/REVIEWED/APPROVED)" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory_3" parent="t_report_signatory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="designation" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_report_signatory_4" parent="t_report_signatory" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="person_name" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="product_type" vertex="1">
+          <mxGeometry height="170" width="250" x="640" y="340" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_0" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="product_type_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_1" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="manufacturer_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_2" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="model_code  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_3" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="nominal_power_wp" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_4" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_length_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_5" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_width_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_product_type_6" parent="t_product_type" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_thickness_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t_psi_lot" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="psi_lot" vertex="1">
+          <mxGeometry height="110" width="250" x="340" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="t_psi_lot_0" parent="t_psi_lot" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="psi_lot_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_psi_lot_1" parent="t_psi_lot" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="report_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_psi_lot_2" parent="t_psi_lot" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="lot_no  (UK with report_id)" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_psi_lot_3" parent="t_psi_lot" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="loading_date" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#1f3a5f;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="container" vertex="1">
+          <mxGeometry height="270" width="250" x="640" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_0" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="container_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_1" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="report_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_2" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="psi_lot_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_3" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="product_type_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_4" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="sr_no" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_5" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="container_no" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_6" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="seal_no" vertex="1">
+          <mxGeometry height="20" width="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_7" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_hu_no" vertex="1">
+          <mxGeometry height="20" width="250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_8" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="current_class" vertex="1">
+          <mxGeometry height="20" width="250" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_9" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_qty" vertex="1">
+          <mxGeometry height="20" width="250" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_10" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="container_size" vertex="1">
+          <mxGeometry height="20" width="250" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_11" parent="t_container" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="loading_date" vertex="1">
+          <mxGeometry height="20" width="250" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#2e7d6b;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="container_shipment" vertex="1">
+          <mxGeometry height="250" width="250" x="940" y="580" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_0" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="shipment_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_1" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="container_id  FK  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_2" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="warehousing_site" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_3" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="container_type" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_4" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="loading_status" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_5" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_position" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_6" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="truck_plate_no" vertex="1">
+          <mxGeometry height="20" width="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_7" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="truck_departure_time" vertex="1">
+          <mxGeometry height="20" width="250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_8" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="no_of_products" vertex="1">
+          <mxGeometry height="20" width="250" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_9" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="full_pallets" vertex="1">
+          <mxGeometry height="20" width="250" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_shipment_10" parent="t_container_shipment" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="partial_pallets" vertex="1">
+          <mxGeometry height="20" width="250" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#2e7d6b;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="container_inspection" vertex="1">
+          <mxGeometry height="330" width="250" x="940" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_0" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="inspection_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_1" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="container_id  FK  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_2" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="result  (PASS/FAIL)" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_3" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="inspection_qty" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_4" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="nonconformity_count" vertex="1">
+          <mxGeometry height="20" width="250" y="110" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_5" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="observation" vertex="1">
+          <mxGeometry height="20" width="250" y="130" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_6" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_type" vertex="1">
+          <mxGeometry height="20" width="250" y="150" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_7" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_length_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_8" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_width_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="190" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_9" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_height_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="210" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_10" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="pallet_volume_m3" vertex="1">
+          <mxGeometry height="20" width="250" y="230" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_11" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="instruction_manual" vertex="1">
+          <mxGeometry height="20" width="250" y="250" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_12" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_length_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="270" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_13" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_width_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="290" as="geometry" />
+        </mxCell>
+        <mxCell id="t_container_inspection_14" parent="t_container_inspection" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="module_thickness_mm" vertex="1">
+          <mxGeometry height="20" width="250" y="310" as="geometry" />
+        </mxCell>
+        <mxCell id="t_inspection_checklist_result" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#2e7d6b;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="inspection_checklist_result" vertex="1">
+          <mxGeometry height="110" width="250" x="1240" y="870" as="geometry" />
+        </mxCell>
+        <mxCell id="t_inspection_checklist_result_0" parent="t_inspection_checklist_result" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="result_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_inspection_checklist_result_1" parent="t_inspection_checklist_result" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="inspection_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_inspection_checklist_result_2" parent="t_inspection_checklist_result" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=2;" value="checklist_item_id  FK" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_inspection_checklist_result_3" parent="t_inspection_checklist_result" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="status  (OK/NOK/NA)" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="t_checklist_item" parent="1" style="swimlane;fontStyle=1;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=0;marginBottom=0;fillColor=#7a5c1e;fontColor=#ffffff;swimlaneFillColor=#ffffff;strokeColor=#1f3a5f;fontSize=13;" value="checklist_item" vertex="1">
+          <mxGeometry height="110" width="250" x="1240" y="1030" as="geometry" />
+        </mxCell>
+        <mxCell id="t_checklist_item_0" parent="t_checklist_item" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;fontStyle=1;" value="checklist_item_id  PK" vertex="1">
+          <mxGeometry height="20" width="250" y="30" as="geometry" />
+        </mxCell>
+        <mxCell id="t_checklist_item_1" parent="t_checklist_item" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="code  UK" vertex="1">
+          <mxGeometry height="20" width="250" y="50" as="geometry" />
+        </mxCell>
+        <mxCell id="t_checklist_item_2" parent="t_checklist_item" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="label" vertex="1">
+          <mxGeometry height="20" width="250" y="70" as="geometry" />
+        </mxCell>
+        <mxCell id="t_checklist_item_3" parent="t_checklist_item" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=middle;spacingLeft=6;spacingRight=4;overflow=hidden;rotatable=0;fontSize=11;" value="display_order" vertex="1">
+          <mxGeometry height="20" width="250" y="90" as="geometry" />
+        </mxCell>
+        <mxCell id="e_5" edge="1" parent="1" source="t_dsr_report" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_manufacturer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_6" edge="1" parent="1" source="t_dsr_report" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_report_upload" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_7" edge="1" parent="1" source="t_report_signatory" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_dsr_report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_8" edge="1" parent="1" source="t_product_type" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_manufacturer" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_9" edge="1" parent="1" source="t_psi_lot" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_dsr_report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_10" edge="1" parent="1" source="t_container" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_dsr_report" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_11" edge="1" parent="1" source="t_container" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_psi_lot" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_12" edge="1" parent="1" source="t_container" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_product_type" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_13" edge="1" parent="1" source="t_container_shipment" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmandOne;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_container" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_14" edge="1" parent="1" source="t_container_inspection" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmandOne;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_container" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_15" edge="1" parent="1" source="t_inspection_checklist_result" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_container_inspection" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e_16" edge="1" parent="1" source="t_inspection_checklist_result" style="edgeStyle=entityRelationEdgeStyle;html=1;endArrow=ERmandOne;startArrow=ERmany;endFill=0;startFill=0;strokeColor=#555555;fontSize=10;" target="t_checklist_item" value="">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+  <diagram name="MongoDB model" id="p2">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="m_projects" value="&lt;b&gt;projects&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id:&amp;nbsp;ObjectId,&lt;br&gt;&amp;nbsp;&amp;nbsp;client:&amp;nbsp;{&amp;nbsp;name,&amp;nbsp;address&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;spv:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;{&amp;nbsp;name&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;name:&amp;nbsp;&#39;Project&amp;nbsp;name&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;createdAt&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;&#39;spv.name&#39;:1,&amp;nbsp;name:1&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f9ff;strokeColor=#1f3a5f;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="360" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="m_products" value="&lt;b&gt;product_types&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id:&amp;nbsp;ObjectId,&lt;br&gt;&amp;nbsp;&amp;nbsp;modelCode:&amp;nbsp;&#39;JKM650M-72HL4-BDVP&#39;&amp;nbsp;(unique),&lt;br&gt;&amp;nbsp;&amp;nbsp;manufacturer:&amp;nbsp;{&amp;nbsp;name&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;nominalPowerWp:&amp;nbsp;650,&lt;br&gt;&amp;nbsp;&amp;nbsp;moduleDimMm:&amp;nbsp;{&amp;nbsp;l,&amp;nbsp;w,&amp;nbsp;t&amp;nbsp;}&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;modelCode:1&amp;nbsp;}&amp;nbsp;unique" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f9ff;strokeColor=#1f3a5f;" vertex="1" parent="1">
+          <mxGeometry x="40" y="300" width="360" height="250" as="geometry" />
+        </mxCell>
+        <mxCell id="m_reports" value="&lt;b&gt;reports&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id:&amp;nbsp;ObjectId,&lt;br&gt;&amp;nbsp;&amp;nbsp;reportNo&amp;nbsp;(unique),&amp;nbsp;reportDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;projectId&amp;nbsp;-&amp;gt;&amp;nbsp;projects,&lt;br&gt;&amp;nbsp;&amp;nbsp;manufacturer,&amp;nbsp;location,&amp;nbsp;workshop,&lt;br&gt;&amp;nbsp;&amp;nbsp;conclusion:&amp;nbsp;&#39;PASS&#39;|&#39;FAIL&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;signatories:&amp;nbsp;[&amp;nbsp;{&amp;nbsp;role,&amp;nbsp;designation,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;name&amp;nbsp;}&amp;nbsp;],&lt;br&gt;&amp;nbsp;&amp;nbsp;lots:&amp;nbsp;[&amp;nbsp;{&amp;nbsp;lotNo,&amp;nbsp;loadingDate&amp;nbsp;}&amp;nbsp;],&lt;br&gt;&amp;nbsp;&amp;nbsp;upload:&amp;nbsp;{&amp;nbsp;fileName,&amp;nbsp;fileHash,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;uploadedAt,&amp;nbsp;parseStatus&amp;nbsp;}&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectId:1,&amp;nbsp;reportDate:-1&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f9ff;strokeColor=#1f3a5f;" vertex="1" parent="1">
+          <mxGeometry x="520" y="40" width="400" height="330" as="geometry" />
+        </mxCell>
+        <mxCell id="m_containers" value="&lt;b&gt;containers  (one doc per container)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id:&amp;nbsp;ObjectId,&lt;br&gt;&amp;nbsp;&amp;nbsp;reportId&amp;nbsp;-&amp;gt;&amp;nbsp;reports,&lt;br&gt;&amp;nbsp;&amp;nbsp;//&amp;nbsp;denormalised&amp;nbsp;dashboard&amp;nbsp;filter&amp;nbsp;keys&lt;br&gt;&amp;nbsp;&amp;nbsp;spvName,&amp;nbsp;projectName,&amp;nbsp;manufacturer,&lt;br&gt;&amp;nbsp;&amp;nbsp;psiLotNo,&amp;nbsp;loadingDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;productTypeId&amp;nbsp;-&amp;gt;&amp;nbsp;product_types,&lt;br&gt;&amp;nbsp;&amp;nbsp;modelCode,&amp;nbsp;nominalPowerWp,&lt;br&gt;&amp;nbsp;&amp;nbsp;srNo,&amp;nbsp;containerNo,&amp;nbsp;sealNo,&amp;nbsp;palletHuNo,&lt;br&gt;&amp;nbsp;&amp;nbsp;currentClass:&amp;nbsp;&#39;I1&#39;,&amp;nbsp;moduleQty:&amp;nbsp;720,&lt;br&gt;&amp;nbsp;&amp;nbsp;containerSize:&amp;nbsp;&#39;40FT&amp;nbsp;HQ&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;capacityKwp:&amp;nbsp;396,&amp;nbsp;&amp;nbsp;//&amp;nbsp;moduleQty*Wp/1000&lt;br&gt;&amp;nbsp;&amp;nbsp;shipment:&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;warehousingSite,&amp;nbsp;containerType,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;loadingStatus,&amp;nbsp;modulePosition,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;truckPlateNo,&amp;nbsp;truckDepartureTime,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;noOfProducts,&amp;nbsp;fullPallets,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;partialPallets&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;inspection:&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;result:&amp;nbsp;&#39;PASS&#39;|&#39;FAIL&#39;,&amp;nbsp;inspectionQty,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;nonConformityCount,&amp;nbsp;observation,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;pallet:&amp;nbsp;{&amp;nbsp;type,&amp;nbsp;lMm,&amp;nbsp;wMm,&amp;nbsp;hMm,&amp;nbsp;volM3&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;instructionManual,&amp;nbsp;moduleDimMm:&amp;nbsp;{l,w,t},&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;checklist:&amp;nbsp;{&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;weather:&#39;OK&#39;,&amp;nbsp;storage:&#39;OK&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;packing:&#39;OK&#39;,&amp;nbsp;loading:&#39;OK&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;packingListValidation:&#39;OK&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;outgoingQC:&#39;OK&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;shockLabel:&#39;OK&#39;|&#39;NA&#39;&amp;nbsp;}&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;photos:&amp;nbsp;[&amp;nbsp;{&amp;nbsp;type:&#39;CONTAINER_SEAL&#39;,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;url,&amp;nbsp;capturedAt&amp;nbsp;}&amp;nbsp;]&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;loadingDate:1&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;reportId:1,&amp;nbsp;containerNo:1&amp;nbsp;}&amp;nbsp;unique" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f3fbf7;strokeColor=#2e7d6b;" vertex="1" parent="1">
+          <mxGeometry x="520" y="430" width="560" height="760" as="geometry" />
+        </mxCell>
+        <mxCell id="r_19" value="projectId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="m_reports" target="m_projects">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r_20" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="m_containers" target="m_reports">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r_21" value="productTypeId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="m_containers" target="m_products">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+<diagram name="MongoDB - Production Supervision" id="p3"><mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1300" math="0" shadow="0"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="ps_reports" value="&lt;b&gt;ps_reports   (one per uploaded report; reportNo unique)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;client{name},&amp;nbsp;spvName,&amp;nbsp;projectName,&lt;br&gt;&amp;nbsp;&amp;nbsp;manufacturer,&amp;nbsp;location,&amp;nbsp;workshop,&lt;br&gt;&amp;nbsp;&amp;nbsp;signatories[{role,designation,name}],&lt;br&gt;&amp;nbsp;&amp;nbsp;summary{&amp;nbsp;days,&amp;nbsp;firstDate,&amp;nbsp;lastDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;plannedQty,&amp;nbsp;actualQty,&amp;nbsp;actualMwp,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;rejectedQty,&amp;nbsp;suspectedQty,&amp;nbsp;openNcs,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;bomItems,&amp;nbsp;bomDiffer,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ipqcChecks,&amp;nbsp;ipqcFail&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;uploadId,&amp;nbsp;createdAt&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;reportDate:-1&amp;nbsp;}&lt;br&gt;//&amp;nbsp;NO&amp;nbsp;media,&amp;nbsp;NO&amp;nbsp;original&amp;nbsp;.docx&amp;nbsp;stored" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#fff8ec;strokeColor=#7a5c1e;" vertex="1" parent="1"><mxGeometry x="40" y="40" width="430" height="330" as="geometry" /></mxCell><mxCell id="ps_production" value="&lt;b&gt;ps_production   (report x date x power bin)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;spvName,&amp;nbsp;projectName,&amp;nbsp;manufacturer,&lt;br&gt;&amp;nbsp;&amp;nbsp;date,&amp;nbsp;powerBin:&amp;nbsp;615,&lt;br&gt;&amp;nbsp;&amp;nbsp;planned:&amp;nbsp;&amp;nbsp;&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;actual:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;deviation:&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;day:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;night:&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;}&amp;nbsp;}&lt;br&gt;//&amp;nbsp;reports&amp;nbsp;are&amp;nbsp;cumulative:&amp;nbsp;dashboards&amp;nbsp;keep&amp;nbsp;the&lt;br&gt;//&amp;nbsp;LATEST&amp;nbsp;report&amp;#x27;s&amp;nbsp;row&amp;nbsp;per&amp;nbsp;(projectName,date,bin)&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;date:1,&amp;nbsp;powerBin:1&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#fff8ec;strokeColor=#7a5c1e;" vertex="1" parent="1"><mxGeometry x="520" y="40" width="470" height="300" as="geometry" /></mxCell><mxCell id="ps_qualification" value="&lt;b&gt;ps_qualification   (daily rows + &amp;#x27;cumulative&amp;#x27; row per report)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&amp;nbsp;spvName,&lt;br&gt;&amp;nbsp;&amp;nbsp;projectName,&amp;nbsp;manufacturer,&lt;br&gt;&amp;nbsp;&amp;nbsp;kind:&amp;nbsp;&amp;#x27;daily&amp;#x27;&amp;nbsp;|&amp;nbsp;&amp;#x27;cumulative&amp;#x27;,&amp;nbsp;date,&lt;br&gt;&amp;nbsp;&amp;nbsp;qualified:&amp;nbsp;{&amp;nbsp;&amp;#x27;610&amp;#x27;:&amp;nbsp;{qty,mwp},&amp;nbsp;&amp;#x27;615&amp;#x27;:&amp;nbsp;{qty,mwp}&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;moduleYtd,&amp;nbsp;rejected,&amp;nbsp;elReworkRejected,&lt;br&gt;&amp;nbsp;&amp;nbsp;suspected:&amp;nbsp;{&amp;nbsp;qty,&amp;nbsp;mwp&amp;nbsp;}&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;kind:1,&amp;nbsp;date:1&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#fff8ec;strokeColor=#7a5c1e;" vertex="1" parent="1"><mxGeometry x="520" y="380" width="470" height="290" as="geometry" /></mxCell><mxCell id="ps_nc" value="&lt;b&gt;ps_nc   (non-conformities)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&amp;nbsp;spvName,&lt;br&gt;&amp;nbsp;&amp;nbsp;projectName,&amp;nbsp;manufacturer,&lt;br&gt;&amp;nbsp;&amp;nbsp;key:&amp;nbsp;&amp;#x27;date|process|description&amp;#x27;,&amp;nbsp;&amp;nbsp;&amp;nbsp;//&amp;nbsp;same&amp;nbsp;NC&amp;nbsp;across&amp;nbsp;reports&lt;br&gt;&amp;nbsp;&amp;nbsp;date,&amp;nbsp;line,&amp;nbsp;description,&amp;nbsp;severity,&amp;nbsp;process,&lt;br&gt;&amp;nbsp;&amp;nbsp;affectedModules,&amp;nbsp;controlType,&amp;nbsp;vendorAction,&lt;br&gt;&amp;nbsp;&amp;nbsp;closureStatus,&amp;nbsp;status:&amp;nbsp;OPEN|CLOSED|UNKNOWN,&lt;br&gt;&amp;nbsp;&amp;nbsp;shift,&amp;nbsp;additionalDetails,&amp;nbsp;closedImmediately&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;key:1&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#fff8ec;strokeColor=#7a5c1e;" vertex="1" parent="1"><mxGeometry x="40" y="410" width="430" height="300" as="geometry" /></mxCell><mxCell id="ps_details" value="&lt;b&gt;ps_details   (one per report: detailed sections)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId&amp;nbsp;(unique),&amp;nbsp;reportNo,&amp;nbsp;...,&lt;br&gt;&amp;nbsp;&amp;nbsp;bom:&amp;nbsp;[&amp;nbsp;{&amp;nbsp;line,&amp;nbsp;shift,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;materials:&amp;nbsp;[{&amp;nbsp;material,&amp;nbsp;makeBom,&amp;nbsp;makeActual,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;originBom,&amp;nbsp;originActual,&amp;nbsp;batchNo,&amp;nbsp;result,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;remarks,&amp;nbsp;makeMatches,&amp;nbsp;originMatches&amp;nbsp;}],&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;storage:&amp;nbsp;[{&amp;nbsp;material,&amp;nbsp;temperatureC,&amp;nbsp;humidityPct,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;expiry,&amp;nbsp;observations,&amp;nbsp;result,&amp;nbsp;remarks&amp;nbsp;}]&amp;nbsp;}&amp;nbsp;],&lt;br&gt;&amp;nbsp;&amp;nbsp;ipqc:&amp;nbsp;[{&amp;nbsp;process,&amp;nbsp;check,&amp;nbsp;parameters,&amp;nbsp;qtyTested,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;testResult,&amp;nbsp;result,&amp;nbsp;line,&amp;nbsp;remarks&amp;nbsp;}],&lt;br&gt;&amp;nbsp;&amp;nbsp;flasherVerification[],&amp;nbsp;flasherResults[],&lt;br&gt;&amp;nbsp;&amp;nbsp;soldering:&amp;nbsp;[{&amp;nbsp;line,&amp;nbsp;shift,&amp;nbsp;date,&amp;nbsp;front[7],&amp;nbsp;rear[7]&amp;nbsp;}],&lt;br&gt;&amp;nbsp;&amp;nbsp;gel[],&amp;nbsp;gelOverall,&amp;nbsp;dimension[],&amp;nbsp;dimensionStandard,&lt;br&gt;&amp;nbsp;&amp;nbsp;dimensionOverall,&amp;nbsp;rfid[],&amp;nbsp;internalLab[],&lt;br&gt;&amp;nbsp;&amp;nbsp;finishedStorage[],&amp;nbsp;dataVerification[],&lt;br&gt;&amp;nbsp;&amp;nbsp;firstMeasurement[],&amp;nbsp;calibration{basic[],reference[]},&lt;br&gt;&amp;nbsp;&amp;nbsp;productionTotal{planned,actual,deviation,day,night},&lt;br&gt;&amp;nbsp;&amp;nbsp;quality:&amp;nbsp;[{&amp;nbsp;key,&amp;nbsp;label,&amp;nbsp;value,&amp;nbsp;status&amp;nbsp;}]&amp;nbsp;}&lt;br&gt;//&amp;nbsp;status:&amp;nbsp;OK&amp;nbsp;|&amp;nbsp;WARN&amp;nbsp;|&amp;nbsp;NOK&amp;nbsp;|&amp;nbsp;NA&amp;nbsp;&amp;nbsp;(dashboard&amp;nbsp;checks)" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f3fbf7;strokeColor=#2e7d6b;" vertex="1" parent="1"><mxGeometry x="1040" y="40" width="520" height="630" as="geometry" /></mxCell><mxCell id="e1" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="ps_production" target="ps_reports"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="e2" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="ps_qualification" target="ps_reports"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="e3" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="ps_nc" target="ps_reports"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="e4" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="ps_details" target="ps_reports"><mxGeometry relative="1" as="geometry" /></mxCell></root></mxGraphModel></diagram>
+<diagram name="MongoDB - Pre-Shipment Inspection" id="p4"><mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1700" pageHeight="1300" math="0" shadow="0"><root><mxCell id="0" /><mxCell id="1" parent="0" /><mxCell id="psi_reports" value="&lt;b&gt;psi_reports   (one per report = one per lot; reportNo unique)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;_id,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&lt;br&gt;&amp;nbsp;&amp;nbsp;client{name},&amp;nbsp;spvName,&amp;nbsp;projectName,&lt;br&gt;&amp;nbsp;&amp;nbsp;manufacturer,&amp;nbsp;location,&amp;nbsp;workshop,&lt;br&gt;&amp;nbsp;&amp;nbsp;signatories[{role,designation,name}],&lt;br&gt;&amp;nbsp;&amp;nbsp;lotNo,&amp;nbsp;lot{&amp;nbsp;lotNo,&amp;nbsp;factory,&amp;nbsp;sizePcs,&amp;nbsp;sizeMwp&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;wattClasses[{&amp;nbsp;wattClass,&amp;nbsp;modules,&amp;nbsp;mwp,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;productType,&amp;nbsp;remarks&amp;nbsp;}],&amp;nbsp;wattTotal,&lt;br&gt;&amp;nbsp;&amp;nbsp;conclusion:&amp;nbsp;&amp;#x27;PASS&amp;#x27;|&amp;#x27;FAIL&amp;#x27;,&lt;br&gt;&amp;nbsp;&amp;nbsp;summary{&amp;nbsp;tests,&amp;nbsp;testsPassed,&amp;nbsp;testsFailed,&amp;nbsp;ncTotal,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ncMajor,&amp;nbsp;ncMinor,&amp;nbsp;equipmentOverdue,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;powerOutOfTolerance,&amp;nbsp;avgDiffPct&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;uploadId,&amp;nbsp;createdAt&amp;nbsp;}&lt;br&gt;//&amp;nbsp;idx:&amp;nbsp;{&amp;nbsp;projectName:1,&amp;nbsp;lotNo:1,&amp;nbsp;reportDate:-1&amp;nbsp;}&lt;br&gt;//&amp;nbsp;latest&amp;nbsp;report&amp;nbsp;per&amp;nbsp;(project,&amp;nbsp;lot)&amp;nbsp;wins&amp;nbsp;on&amp;nbsp;dashboards&lt;br&gt;//&amp;nbsp;NO&amp;nbsp;media,&amp;nbsp;NO&amp;nbsp;original&amp;nbsp;.docx&amp;nbsp;stored" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f0ff;strokeColor=#5b3d9a;" vertex="1" parent="1"><mxGeometry x="40" y="40" width="450" height="360" as="geometry" /></mxCell><mxCell id="psi_results" value="&lt;b&gt;psi_results   (one per inspection/test row)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&amp;nbsp;spvName,&lt;br&gt;&amp;nbsp;&amp;nbsp;projectName,&amp;nbsp;manufacturer,&amp;nbsp;lotNo,&lt;br&gt;&amp;nbsp;&amp;nbsp;test,&amp;nbsp;standard,&amp;nbsp;aql,&amp;nbsp;sampling,&amp;nbsp;observation,&lt;br&gt;&amp;nbsp;&amp;nbsp;decision:&amp;nbsp;&amp;#x27;PASS&amp;#x27;|&amp;#x27;FAIL&amp;#x27;,&amp;nbsp;remarks&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f0ff;strokeColor=#5b3d9a;" vertex="1" parent="1"><mxGeometry x="540" y="40" width="440" height="250" as="geometry" /></mxCell><mxCell id="psi_nc" value="&lt;b&gt;psi_nc   (non-conformities)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId,&amp;nbsp;reportNo,&amp;nbsp;reportDate,&amp;nbsp;spvName,&lt;br&gt;&amp;nbsp;&amp;nbsp;projectName,&amp;nbsp;manufacturer,&amp;nbsp;lotNo,&lt;br&gt;&amp;nbsp;&amp;nbsp;test,&amp;nbsp;category,&amp;nbsp;description,&amp;nbsp;risk,&amp;nbsp;count&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f5f0ff;strokeColor=#5b3d9a;" vertex="1" parent="1"><mxGeometry x="540" y="330" width="440" height="200" as="geometry" /></mxCell><mxCell id="psi_details" value="&lt;b&gt;psi_details   (one per report: detailed sections)&lt;/b&gt;&lt;br&gt;{&amp;nbsp;reportId&amp;nbsp;(unique),&amp;nbsp;reportNo,&amp;nbsp;lotNo,&amp;nbsp;...,&lt;br&gt;&amp;nbsp;&amp;nbsp;testConditions:&amp;nbsp;[{&amp;nbsp;test,&amp;nbsp;applicable,&amp;nbsp;process,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;manufacturer,&amp;nbsp;model,&amp;nbsp;serialNo,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;lastCalibration,&amp;nbsp;nextCalibration,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;observation,&amp;nbsp;evaluation&amp;nbsp;}],&lt;br&gt;&amp;nbsp;&amp;nbsp;calibration:&amp;nbsp;[&amp;nbsp;sun-simulator&amp;nbsp;checks&amp;nbsp;before/&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;during&amp;nbsp;PSI&amp;nbsp;],&lt;br&gt;&amp;nbsp;&amp;nbsp;maxPower:&amp;nbsp;{&amp;nbsp;rows:&amp;nbsp;[{&amp;nbsp;srNo,&amp;nbsp;moduleNo,&amp;nbsp;pmax,&amp;nbsp;vpm,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;ipm,&amp;nbsp;ff,&amp;nbsp;pmax1,&amp;nbsp;vpm1,&amp;nbsp;ipm1,&amp;nbsp;ff1,&amp;nbsp;diffWp,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;diffPct,&amp;nbsp;dimension&amp;nbsp;}],&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;stats{&amp;nbsp;minimum,&amp;nbsp;maximum,&amp;nbsp;average&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;summary{&amp;nbsp;modules,&amp;nbsp;outOfTolerance,&amp;nbsp;avgPre,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;avgDuring,&amp;nbsp;avgDiffPct,&amp;nbsp;maxAbsDiffPct&amp;nbsp;}&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;ncSummary{&amp;nbsp;&amp;lt;test&amp;gt;:&amp;nbsp;[{&amp;nbsp;defect,&amp;nbsp;limitMajor,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;limitMinor,&amp;nbsp;observedMajor,&amp;nbsp;observedMinor,&lt;br&gt;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;evaluation&amp;nbsp;}]&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;ncModules{&amp;nbsp;&amp;lt;test&amp;gt;:&amp;nbsp;[{&amp;nbsp;srNo,&amp;nbsp;serialNo,&amp;nbsp;defect&amp;nbsp;}]&amp;nbsp;},&lt;br&gt;&amp;nbsp;&amp;nbsp;insulation[],&amp;nbsp;wetLeakage[],&amp;nbsp;biFaciality[],&lt;br&gt;&amp;nbsp;&amp;nbsp;dynamicLoad[],&amp;nbsp;staticLoad[],&amp;nbsp;robustness[],&lt;br&gt;&amp;nbsp;&amp;nbsp;lowIrradiance[]&amp;nbsp;}" style="rounded=1;arcSize=3;whiteSpace=wrap;html=1;align=left;verticalAlign=top;spacingLeft=8;spacingTop=4;fontFamily=Courier New;fontSize=11;fillColor=#f3fbf7;strokeColor=#2e7d6b;" vertex="1" parent="1"><mxGeometry x="1030" y="40" width="540" height="640" as="geometry" /></mxCell><mxCell id="f1" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="psi_results" target="psi_reports"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="f2" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="psi_nc" target="psi_reports"><mxGeometry relative="1" as="geometry" /></mxCell><mxCell id="f3" value="reportId" style="endArrow=open;dashed=1;html=1;strokeColor=#555555;fontSize=10;" edge="1" parent="1" source="psi_details" target="psi_reports"><mxGeometry relative="1" as="geometry" /></mxCell></root></mxGraphModel></diagram>
+</mxfile>

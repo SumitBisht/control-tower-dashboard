@@ -1,20 +1,23 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { api, WidgetSetting } from "../api";
+import { MODULES } from "../modules";
 
-const MODULE = "container_loading";
 
 export default function AdminWidgets() {
   const qc = useQueryClient();
-  const q = useQuery({ queryKey: ["widget-admin"], queryFn: () => api<WidgetSetting[]>(`/admin/widgets/${MODULE}`) });
+  const [MODULE, setModule] = useState(MODULES[0].key);
+  const q = useQuery({ queryKey: ["widget-admin", MODULE], queryFn: () => api<WidgetSetting[]>(`/admin/widgets/${MODULE}`) });
   const [err, setErr] = useState<string | null>(null);
 
   const save = async (key: string, json: object) => {
     try {
       setErr(null);
       await api(`/admin/widgets/${MODULE}/${key}`, { method: "PUT", json });
-      await qc.invalidateQueries({ queryKey: ["widget-admin"] });
+      await qc.invalidateQueries({ queryKey: ["widget-admin", MODULE] });
       qc.invalidateQueries({ queryKey: ["dashboard"] });
+      qc.invalidateQueries({ queryKey: ["ps-dashboard"] });
+      qc.invalidateQueries({ queryKey: ["psi-dashboard"] });
     } catch (e) {
       setErr((e as Error).message);
     }
@@ -22,7 +25,10 @@ export default function AdminWidgets() {
 
   return (
     <div>
-      <h2>Widgets &amp; Columns — Container Loading Monitoring</h2>
+      <h2>Widgets &amp; Columns</h2>
+      <label className="inline-select">Dashboard
+        <select value={MODULE} onChange={(e) => setModule(e.target.value)}>{MODULES.map((m) => <option key={m.key} value={m.key}>{m.title}</option>)}</select>
+      </label>
       <p className="muted">Hidden widgets and columns are removed from the dashboard for every user (the server does not send them).</p>
       {err && <div className="alert error">{err}</div>}
       <div className="widget-list">

@@ -56,8 +56,8 @@ async def update_user(user_id: str, body: UserUpdateIn, admin=Depends(require_ad
     if body.status:
         upd["status"] = body.status
     if body.password:
-        if len(body.password) < 8:
-            raise HTTPException(422, "password must be at least 8 characters")
+        if len(body.password) < 4:
+            raise HTTPException(422, "password must be at least 4 characters")
         upd["passwordHash"] = hash_password(body.password)
     losing_admin = u["role"] == "admin" and u["status"] == "active" and (
         upd.get("role", "admin") != "admin" or upd.get("status", "active") != "active")

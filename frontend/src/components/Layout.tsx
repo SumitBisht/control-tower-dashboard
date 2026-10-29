@@ -1,11 +1,14 @@
-import { NavLink, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import { useAuth } from "../auth";
 import logo from "../assets/logo.jpeg";
+import { moduleByPath } from "../modules";
 import { useAppConfig } from "../useAppConfig";
 
 // Add future modules/pages here. `roles` limits visibility; `soon` renders a disabled placeholder.
 const NAV = [
   { to: "/", label: "Container Loading Monitoring", end: true },
+  { to: "/production", label: "Production Supervision" },
+  { to: "/preshipment", label: "Pre-Shipment Inspection" },
   { to: "/reports", label: "Report Master" },
   { to: "/uploads", label: "Upload Master", roles: ["uploader", "admin"] },
   { to: "/admin/users", label: "Users", roles: ["admin"], group: "Admin" },
@@ -15,11 +18,13 @@ const NAV = [
 export default function Layout() {
   const { user, logout } = useAuth();
   const { clientName } = useAppConfig();
+  const { pathname } = useLocation();
+  const heading = moduleByPath(pathname).heading;
   return (
     <div className="shell">
       <header className="topbar">
         <div className="brand"><img src={logo} alt="DSR" className="logo" /> <b>CONTROL TOWER</b></div>
-        <div className="title">CONTAINER LOADING MONITORING<small>PV MODULES</small></div>
+        <div className="title">{heading}<small>PV MODULES</small></div>
         {clientName && <div className="client">{clientName}</div>}
         
         <div className="who">

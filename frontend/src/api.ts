@@ -79,7 +79,7 @@ export type Role = "viewer" | "uploader" | "admin";
 export interface User { id: string; email: string; name: string; role: Role; status: "pending" | "active" | "disabled"; createdAt?: string }
 export interface LogEntry { ts: string; level: "INFO" | "WARNING" | "ERROR"; code: string; message: string }
 export interface Upload {
-  id: string; fileName: string; fileSize: number; uploadedBy: string; uploadedAt: string; status: string;
+  id: string; module: string; fileName: string; fileSize: number; uploadedBy: string; uploadedAt: string; status: string;
   summary: Record<string, any> | null; counts: Record<string, number>; logs?: LogEntry[];
 }
 export interface WidgetSetting { key: string; title: string; kind: string; visible: boolean; columns: Record<string, boolean>; columnLabels: Record<string, string> }

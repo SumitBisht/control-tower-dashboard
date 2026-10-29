@@ -42,6 +42,21 @@ SPV / Project come from the document; the upload form can override them, and `CL
 PSI lot comes from the summary table by (loading date, product type); a date spanning lots (e.g. `1, 2`) assigns both lots.
 The unfilled template itself is rejected by design.
 
+## Production Supervision module
+Dashboard tab `Production Supervision` (planned vs actual output, daily production, qualified/rejected modules, non-conformities,
+quality checks from BOM / IPQC / flasher / gel / dimension / RFID / calibration) fed by the *DSR Report - Production Supervision* Word
+files. Upload them under **Upload Master** (choose *Production Supervision*). Reports are cumulative - later reports repeat earlier
+days and the latest one wins. **Photos/videos are ignored: nothing is extracted, stored or shown, and the original .docx is not kept.**
+Report Master -> *Production Supervision* lists reports and exports every section to Excel (or production rows to CSV).
+Data model: [docs/DATA_MODEL.md](docs/DATA_MODEL.md).
+
+## Pre-Shipment Inspection module
+Dashboard tab `Pre-Shipment Inspection` for the *DSR Pre-Shipment Inspection Report* (one Word file per lot): lots inspected, tests passed,
+non-conformities, power difference before vs during PDI, per-lot results (standard / AQL / sampling / observation / decision), maximum-power
+statistics and the test-equipment calibration status (flags calibrations due before the report date). Upload under **Upload Master**
+(*Pre-Shipment Inspection*). Checks raised in the upload log include sampling below the AQL plan and lot-size / MWp mismatches.
+Photos are ignored and original files are not kept (as for Production Supervision). Report Master exports every section to Excel.
+
 ## Reports tab
 Search containers/reports by loading date range, product type (model), manufacturer, SPV, project, PSI lot and free text
 (report no, container no, seal no...). From the results: download the **original Word report**, or **export Excel/CSV**

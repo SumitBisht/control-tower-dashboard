@@ -22,6 +22,19 @@ const KPI = {
   kpi_modules: { label: "Total Modules", tone: "green", fmt: (d: any) => d.value.toLocaleString() },
   kpi_capacity: { label: "Total Capacity", tone: "amber", fmt: (d: any) => `${d.value.toLocaleString(undefined, { maximumFractionDigits: 3 })} MWp` },
   kpi_result: { label: "Inspection Result", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}% SUCCESS`) },
+  // Production Supervision
+  kpi_output: { label: "Total Actual Output", tone: "blue", fmt: (d: any) => `${d.value.toLocaleString()} pcs`, sub: (d: any) => `${d.mwp} MWp` },
+  kpi_achievement: { label: "Plan Achievement", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
+    sub: (d: any) => `${d.actual.toLocaleString()} of ${d.planned.toLocaleString()} planned` },
+  kpi_rejected: { label: "Rejected / Suspected", tone: "amber", fmt: (d: any) => `${d.value.toLocaleString()} pcs`,
+    sub: (d: any) => `${d.rejected.toLocaleString()} rejected · ${d.suspected.toLocaleString()} suspected (cumulative)` },
+  kpi_open_nc: { label: "Open Non-Conformities", tone: "green", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.total} recorded in total` },
+  // Pre-Shipment Inspection
+  kpi_lots: { label: "Lots Inspected", tone: "blue", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.modules.toLocaleString()} modules · ${d.mwp} MWp` },
+  kpi_pass_rate: { label: "Tests Passed", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`), sub: (d: any) => `${d.passed} of ${d.tests} tests` },
+  kpi_ncs: { label: "Non-Conformities", tone: "amber", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.major} major · ${d.minor} minor` },
+  kpi_power_dev: { label: "Avg Power Difference", tone: "green", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
+    sub: (d: any) => `${d.outOfTolerance} module(s) outside ±1% (pre vs during PDI)` },
 } as const;
 
 export function Kpi({ id, data }: { id: keyof typeof KPI; data: any }) {
@@ -31,6 +44,7 @@ export function Kpi({ id, data }: { id: keyof typeof KPI; data: any }) {
       <div className="kpi-label">{k.label}</div>
       <div className="kpi-value">{k.fmt(data)}</div>
       {id === "kpi_result" && data.inspected > 0 && <div className="kpi-sub">{data.passed} of {data.inspected} containers passed</div>}
+      {"sub" in k && <div className="kpi-sub">{(k as any).sub(data)}</div>}
     </div>
   );
 }
@@ -60,10 +74,9 @@ export function DataTable({ data }: { data: { columns: { key: string; label: str
   // The "by Wp" column is a group: expand it into one sub-column per module class present in the data.
   const cols = data.columns.flatMap((c) =>
     c.key === "containers_by_wp" ? (data.wp_classes ?? []).map((w) => ({ key: `wp:${w}`, label: `${w} Wp` })) : [c]);
-  const cell = (r: any, key: string) => {
+  const cell = (r: any, key: string): ReactNode => {
     if (key.startsWith("wp:")) return r.containers_by_wp?.[key.slice(3)] ?? 0;
-    const v = r[key];
-    return typeof v === "number" && key !== "psi_lot" ? v.toLocaleString(undefined, { maximumFractionDigits: 3 }) : v;
+    return fmtCell(key, r[key]);
   };
   return (
     <table className="grid">
@@ -87,4 +100,25 @@ export function Checklist({ data }: { data: { columns: { key: string }[]; rows: 
       </tbody>
     </table>
   );
+}
+
+const fmtQM = (v: { qty: number | null; mwp: number | null }) =>
+  `${v.qty == null ? "—" : v.qty.toLocaleString()}${v.mwp == null ? "" : ` · ${v.mwp.toLocaleString(undefined, { maximumFractionDigits: 3 })} MWp`}`;
+
+const PILL: Record<string, string> = { OPEN: "nok", CLOSED: "ok", OK: "ok", NOK: "nok", WARN: "na", NA: "na", UNKNOWN: "na", MAJOR: "nok", MINOR: "na", CRITICAL: "nok",
+  PASS: "ok", FAIL: "nok", OVERDUE: "nok" };
+const PILL_KEYS = new Set(["status", "severity", "decision", "conclusion", "risk", "category"]);
+
+/** Renders table cells: numbers, {qty,mwp} pairs, {bin: {qty,mwp}} maps and status/severity pills. */
+export function fmtCell(key: string, v: any): ReactNode {
+  if (v == null || v === "") return "—";
+  if (PILL_KEYS.has(key) && typeof v === "string") {
+    return <span className={`pill ${PILL[v.toUpperCase()] ?? "na"}`}>{v === "NA" ? "N/A" : v}</span>;
+  }
+  if (typeof v === "number") return key === "psi_lot" ? v : v.toLocaleString(undefined, { maximumFractionDigits: 3 });
+  if (typeof v === "object") {
+    if ("qty" in v) return fmtQM(v);
+    return Object.entries(v).map(([bin, q]) => <div key={bin}>{bin} Wp: {fmtQM(q as any)}</div>);
+  }
+  return v;
 }

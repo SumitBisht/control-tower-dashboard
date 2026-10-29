@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends, Query
 
 from ...core.db import get_db
 from ...deps import get_current_user
-from ...widgets import get_widget_settings
+from ...widgets import get_widget_settings, table_payload as _table
 from .module import CHECKLIST_LABELS
 from .reports import add_report_routes
 
@@ -114,8 +114,3 @@ def build_router(module) -> APIRouter:
     return r
 
 
-def _table(module, widget_key: str, rows: list[dict], visible_cols: set[str], keep: tuple[str, ...] = ()) -> dict:
-    wdef = next(x for x in module.widgets if x.key == widget_key)
-    columns = [{"key": c.key, "label": c.label} for c in wdef.columns if c.key in visible_cols]
-    allowed = {c["key"] for c in columns} | set(keep)
-    return {"columns": columns, "rows": [{k: v for k, v in row.items() if k in allowed} for row in rows]}
