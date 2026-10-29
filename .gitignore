@@ -1,0 +1,53 @@
+# ---- Secrets / local config (never commit) ----
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# ---- Python (backend) ----
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.egg-info/
+
+# ---- Node / React (frontend) ----
+node_modules/
+dist/
+*.tsbuildinfo
+.vite/
+npm-debug.log*
+coverage/
+
+# ---- Runtime data ----
+# Uploaded reports/photos written by the local storage backend, and API-test scratch dirs
+backend/storage/
+backend/.test_storage/
+*.log
+
+# ---- Terraform (state holds generated DB password + JWT secret!) ----
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+!*.tfvars.example
+crash.log
+.terraform.tfstate.lock.info
+
+# ---- Editors / OS ----
+.idea/
+.vscode/*
+!.vscode/extensions.json
+*.swp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ---- Claude Code local settings ----
+.claude/settings.local.json

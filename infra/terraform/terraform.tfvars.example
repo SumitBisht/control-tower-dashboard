@@ -1,0 +1,5 @@
+atlas_org_id = "REPLACE_WITH_ATLAS_ORG_ID"
+admin_email  = "admin@yourcompany.com"
+client_name  = ""            # optional SPV/client name stamped on uploads; blank = name from the Word document
+aws_region   = "ap-south-1"
+atlas_region = "AP_SOUTH_1"
