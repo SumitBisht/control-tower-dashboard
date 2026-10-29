@@ -22,7 +22,7 @@ from ..base import Issue, ParseResult
 
 MAX_CONTAINERS = 5000
 MAX_PHOTO_BYTES = 8 * 1024 * 1024
-DATE_FORMATS = ("%d.%m.%Y", "%d-%m-%Y", "%d/%m/%Y", "%d-%b-%Y", "%d-%B-%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d")
+DATE_FORMATS = ("%d.%m.%Y %H:%M", "%d-%m-%Y %H:%M", "%d.%m.%Y", "%d-%m-%Y", "%d/%m/%Y", "%d-%b-%Y", "%d-%B-%Y", "%d %b %Y", "%d %B %Y", "%Y-%m-%d")
 
 CHECKLIST_FIELDS = {  # output key -> label prefix in "Summary of Inspection"
     "weather": "weather conditions",
@@ -205,6 +205,10 @@ def _parse_summary(table: Table, issues: list[Issue]) -> list[dict[str, Any]]:
         if "no of containers" in h and h.endswith("total"):
             idx["containers"] = j
             break
+    for j, h in enumerate(hdr):
+        if "no of modules" in h and h.endswith("total"):
+            idx["modules"] = j
+            break
     out = []
     for r in rows[start:]:
         c = row_cells(r)
@@ -212,13 +216,15 @@ def _parse_summary(table: Table, issues: list[Issue]) -> list[dict[str, Any]]:
         if not d:
             continue
         out.append({"loadingDate": d, "modelCode": c[idx["type"]], "lotNo": c[idx["lot"]],
-                    "containers": parse_int(c[idx["containers"]]) if len(c) > idx["containers"] else None})
+                    "containers": parse_int(c[idx["containers"]]) if len(c) > idx["containers"] else None,
+                    "modules": parse_int(c[idx["modules"]]) if "modules" in idx and len(c) > idx["modules"] else None})
     return out
 
 
 # ---------- photos ----------
 PHOTO_HINTS = ("container seal", "sample pallet picture", "empty container", "loading process", "closed container",
-               "container after loading", "transporter packing list")
+               "container after loading", "transporter packing list", "vehicle number", "fully loaded container",
+               "invoice and out time", "container closing")
 
 
 def _photos_from_table(doc, table: Table, issues: list[Issue], sr: int) -> list[dict]:
@@ -256,11 +262,14 @@ def parse_container_loading(data: bytes) -> ParseResult:
         issues.append(Issue("WARNING", code, msg, ctx))
 
     # 1. container-level checks
-    if not zipfile.is_zipfile(io.BytesIO(data)):
+    src = io.BytesIO(data) if isinstance(data, (bytes, bytearray)) else str(data)  # bytes or a path on disk
+    if not zipfile.is_zipfile(src):
         err("NOT_DOCX", "The file is not a valid .docx document (legacy .doc, corrupted, or renamed file).")
         return ParseResult(None, issues)
+    if isinstance(src, io.BytesIO):
+        src.seek(0)
     try:
-        doc = Document(io.BytesIO(data))
+        doc = Document(src)
     except Exception as e:  # noqa: BLE001
         err("DOCX_UNREADABLE", f"The Word document could not be opened: {type(e).__name__}.")
         return ParseResult(None, issues)
@@ -272,6 +281,9 @@ def parse_container_loading(data: bytes) -> ParseResult:
         kv = kv_of(t)
         if "report no" in kv:
             kv_all = kv
+        if "spv name" in kv or "project name" in kv:  # newer template: Client / Project Name / SPV Name table
+            report["client"] = {"name": kv.get("client", ""), "address": ""}
+            report["spvName"], report["projectName"] = kv.get("spv name", ""), kv.get("project name", "")
         first = clean(t.rows[0].cells[0].text) if t.rows else ""
         if norm_key(first) == "client details" and len(t.rows) > 1:
             lines = [clean(x) for x in t.rows[1].cells[0].text.splitlines() if clean(x)]
@@ -350,7 +362,7 @@ def parse_container_loading(data: bytes) -> ParseResult:
             err("MODULE_QTY_INVALID", f"Containers table {label}: module quantity '{g['moduleQty']}' is not a positive number.", row=ri + 1); ok = False
         power = parse_float(g["nominalPowerWp"])
         if not power or power <= 0:
-            m = re.search(r"(\d{3})M", g["modelCode"].upper())
+            m = re.search(r"(?:^|[-_])(\d{3})[A-Z]", g["modelCode"].upper())
             power = float(m.group(1)) if m else None
             if power:
                 warn("POWER_FROM_MODEL", f"{cno}: nominal power missing; taken from model code ({power:g} Wp).", container=cno)
@@ -373,6 +385,7 @@ def parse_container_loading(data: bytes) -> ParseResult:
             "modelCode": model, "nominalPowerWp": power, "currentClass": g.get("currentClass", ""),
             "moduleQty": qty, "containerSize": g.get("containerSize", ""), "loadingDate": ld,
             "capacityKwp": round(qty * power / 1000, 3), "psiLotNo": lot,
+            "psiLots": [x for x in re.split(r"[,&/;\s]+", lot) if x] or ["N/A"],  # "1, 2" => ["1", "2"]
             "shipment": {}, "inspection": {}, "photos": [],
         })
     for (d, model), nos in lot_missing.items():
@@ -388,12 +401,12 @@ def parse_container_loading(data: bytes) -> ParseResult:
     sections_seen: set[int] = set()
     for block in iter_blocks(doc):
         if isinstance(block, Paragraph):
-            m = re.search(r"shipment details\s*[-–—:]\s*container number\s*(\d+)", block.text, re.I)
+            m = re.match(r"\s*(?:shipment details\s*[-–—:]\s*)?container number\s*(\d+)\s*$", block.text, re.I)
             if m:
                 current = int(m.group(1))
                 sections_seen.add(current)
                 if current not in by_sr:
-                    warn("SECTION_NO_CONTAINER", f"'Shipment Details - Container Number {current}' has no matching row in the containers table; ignored.")
+                    warn("SECTION_NO_CONTAINER", f"'Container Number {current}' section has no matching row in the containers table; ignored.")
             continue
         text = norm_key(" ".join(" ".join(row_cells(r)) for r in block.rows))
         kv = kv_of(block)
@@ -421,10 +434,14 @@ def parse_container_loading(data: bytes) -> ParseResult:
 
     # 6. cross-checks against the document's own summary table
     for s in summary_rows:
-        n = sum(1 for c in containers if c["loadingDate"].date() == s["loadingDate"].date() and norm_key(c["modelCode"]) == norm_key(s["modelCode"]))
+        match = [c for c in containers if c["loadingDate"].date() == s["loadingDate"].date() and norm_key(c["modelCode"]) == norm_key(s["modelCode"])]
+        n, mods = len(match), sum(c["moduleQty"] for c in match)
         if s["containers"] is not None and n != s["containers"]:
             warn("SUMMARY_MISMATCH", f"Summary table says {s['containers']} container(s) for {s['loadingDate']:%d-%m-%Y} / {s['modelCode']} "
                  f"but the containers table lists {n}. Dashboard uses the containers table.")
+        if s.get("modules") is not None and mods != s["modules"]:
+            warn("SUMMARY_MODULES_MISMATCH", f"Summary table says {s['modules']:,} modules for {s['loadingDate']:%d-%m-%Y} / {s['modelCode']} "
+                 f"but the containers table adds up to {mods:,}. Dashboard uses the containers table.")
     results = [c["inspection"].get("result") for c in containers]
     if report["conclusion"] is None:
         report["conclusion"] = "FAIL" if "FAIL" in results else "PASS" if "PASS" in results else None
@@ -442,7 +459,11 @@ def errors_exist(issues: list[Issue]) -> bool:
 
 def _shipment(kv, c, warn, parse_date):
     seal = kv_get(kv, "seal number") or ""
-    if seal and c["sealNo"] and clean(seal).upper() != c["sealNo"].upper():
+    if re.fullmatch(r"(n/?a|nil|-+)?", seal.strip(), re.I) or is_blank(seal):
+        seal = ""  # "N/A" is not a seal number
+    if seal and not c["sealNo"]:
+        c["sealNo"] = seal  # newer template has no Seal column in the containers table
+    elif seal and clean(seal).upper() != c["sealNo"].upper():
         warn("SEAL_MISMATCH", f"Container {c['containerNo']}: seal in shipment details ('{seal}') differs from containers table ('{c['sealNo']}'). Containers table used.",
              container=c["containerNo"])
     dep = kv_get(kv, "time of truck departure") or ""

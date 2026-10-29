@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 import { Navigate } from "react-router-dom";
 import { api } from "../api";
 import { useAuth } from "../auth";
+import logo from "../assets/logo.jpeg";
 
 export default function Login() {
   const { user, login } = useAuth();
@@ -32,7 +33,7 @@ export default function Login() {
   return (
     <div className="login-page">
       <form className="card login" onSubmit={submit}>
-        <h1>DSR <b>CONTROL TOWER</b></h1>
+        <h1><img src={logo} alt="DSR" className="logo" /> <b>CONTROL TOWER</b></h1>
         <h2>{mode === "login" ? "Sign in" : "Request access"}</h2>
         {msg && <div className={`alert ${msg.kind}`}>{msg.text}</div>}
         {mode === "register" && <input placeholder="Full name" value={f.name} onChange={(e) => setF({ ...f, name: e.target.value })} required />}

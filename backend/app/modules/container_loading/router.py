@@ -4,11 +4,12 @@ from ...core.db import get_db
 from ...deps import get_current_user
 from ...widgets import get_widget_settings
 from .module import CHECKLIST_LABELS
+from .reports import add_report_routes
 
 
 def _filters(spv, project, manufacturer, psi_lot) -> dict:
     m = {}
-    for field, val in (("spvName", spv), ("projectName", project), ("manufacturer", manufacturer), ("psiLotNo", psi_lot)):
+    for field, val in (("spvName", spv), ("projectName", project), ("manufacturer", manufacturer), ("psiLots", psi_lot)):
         if val and val != "All":
             m[field] = val
     return m
@@ -25,8 +26,9 @@ def build_router(module) -> APIRouter:
     async def filters(user=Depends(get_current_user)):
         db = get_db()
         out = {}
-        for key, field in (("spv", "spvName"), ("project", "projectName"), ("manufacturer", "manufacturer"), ("psi_lot", "psiLotNo")):
+        for key, field in (("spv", "spvName"), ("project", "projectName"), ("manufacturer", "manufacturer"), ("psi_lot", "psiLots")):
             out[key] = sorted(await db.containers.distinct(field), key=lambda x: (len(str(x)), str(x)))
+        out["model"] = sorted(await db.containers.distinct("modelCode"))
         return out
 
     @r.get("/dashboard")
@@ -108,6 +110,7 @@ def build_router(module) -> APIRouter:
             w["checklist_summary"] = _table(module, "checklist_summary", rows, cols["checklist_summary"], keep=("counts",))
         return out
 
+    add_report_routes(r)
     return r
 
 

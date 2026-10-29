@@ -25,9 +25,9 @@ class Settings(BaseSettings):
     storage_local_dir: str = "./storage"
     s3_bucket: str = ""
 
-    max_upload_mb: int = 25
-    max_uncompressed_mb: int = 300
-    parse_timeout_seconds: int = 60
+    max_upload_mb: int = 250
+    max_uncompressed_mb: int = 1000
+    parse_timeout_seconds: int = 300
 
 
 @lru_cache

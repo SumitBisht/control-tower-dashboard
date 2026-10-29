@@ -1,9 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import { api, Upload } from "../api";
 import { useAuth } from "../auth";
 
-const MAX_MB = 25;
+const MAX_MB = 250;
 
 function LogView({ u }: { u: Upload }) {
   return (
@@ -12,6 +12,7 @@ function LogView({ u }: { u: Upload }) {
         <b>{u.fileName}</b> — {u.status.replace(/_/g, " ")}
         {u.summary && <span> · {u.summary.containers} containers, {u.summary.modules?.toLocaleString()} modules</span>}
       </div>
+      {u.status === "PROCESSING" && <div className="log-line"><span>Processing… this can take a minute for reports with many photos.</span></div>}
       {(u.logs ?? []).map((l, i) => (
         <div key={i} className={`log-line ${l.level.toLowerCase()}`}>
           <span className="ts">{new Date(l.ts).toLocaleTimeString()}</span>
@@ -31,12 +32,28 @@ export default function Uploads() {
   const [spv, setSpv] = useState("");
   const [project, setProject] = useState("");
   const [replace, setReplace] = useState(false);
-  const [result, setResult] = useState<Upload | null>(null);
+  const [activeId, setActiveId] = useState<string | null>(null);
   const [clientErr, setClientErr] = useState<string | null>(null);
   const history = useQuery({ queryKey: ["uploads"], queryFn: () => api<Upload[]>("/uploads") });
 
+  // Processing runs in the background on the server (reports with photos are ~100 MB); poll until it finishes.
+  const active = useQuery({
+    queryKey: ["upload", activeId], enabled: !!activeId, queryFn: () => api<Upload>(`/uploads/${activeId}`),
+    refetchInterval: (q) => (q.state.data?.status === "PROCESSING" ? 1500 : false),
+  });
+  const result = active.data ?? null;
+  const processing = result?.status === "PROCESSING";
+  useEffect(() => {
+    if (!result || result.status === "PROCESSING") return;
+    qc.invalidateQueries({ queryKey: ["uploads"] });
+    qc.invalidateQueries({ queryKey: ["dashboard"] });
+    qc.invalidateQueries({ queryKey: ["filters"] });
+    qc.invalidateQueries({ queryKey: ["reports"] });
+    if (result.status !== "FAILED") { setFile(null); if (fileRef.current) fileRef.current.value = ""; }
+  }, [result?.status]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const pick = (f: File | null) => {
-    setResult(null);
+    setActiveId(null);
     setClientErr(null);
     if (f && !f.name.toLowerCase().endsWith(".docx")) { setClientErr("Only .docx files are accepted."); return; }
     if (f && f.size > MAX_MB * 1024 * 1024) { setClientErr(`File is larger than ${MAX_MB} MB.`); return; }
@@ -52,21 +69,15 @@ export default function Uploads() {
       form.append("replace", String(replace));
       return api<Upload>("/uploads", { method: "POST", form });
     },
-    onSuccess: (r) => {
-      setResult(r);
-      if (r.status !== "FAILED") { setFile(null); if (fileRef.current) fileRef.current.value = ""; }
-      qc.invalidateQueries({ queryKey: ["uploads"] });
-      qc.invalidateQueries({ queryKey: ["dashboard"] });
-      qc.invalidateQueries({ queryKey: ["filters"] });
-    },
+    onSuccess: (r) => { setActiveId(r.id); qc.invalidateQueries({ queryKey: ["uploads"] }); },
     onError: (e) => setClientErr((e as Error).message),
   });
 
-  const view = async (id: string) => setResult(await api<Upload>(`/uploads/${id}`));
+  const view = (id: string) => setActiveId(id);
   const del = async (id: string) => {
     if (!confirm("Delete this upload and all data it created?")) return;
     await api(`/uploads/${id}`, { method: "DELETE" });
-    setResult(null);
+    setActiveId(null);
     qc.invalidateQueries();
   };
 
@@ -89,7 +100,7 @@ export default function Uploads() {
         </div>
         <label className="check"><input type="checkbox" checked={replace} onChange={(e) => setReplace(e.target.checked)} /> Replace existing report with the same Report No.</label>
         {clientErr && <div className="alert error">{clientErr}</div>}
-        <button className="primary" disabled={!file || up.isPending}>{up.isPending ? "Processing…" : "Upload & process"}</button>
+        <button className="primary" disabled={!file || up.isPending || processing}>{up.isPending ? "Uploading…" : processing ? "Processing…" : "Upload & process"}</button>
       </form>
 
       {result && <LogView u={result} />}

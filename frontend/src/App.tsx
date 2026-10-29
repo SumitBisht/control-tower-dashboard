@@ -7,6 +7,7 @@ import AdminUsers from "./pages/AdminUsers";
 import AdminWidgets from "./pages/AdminWidgets";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
+import Reports from "./pages/Reports";
 import Uploads from "./pages/Uploads";
 
 function Guard({ roles, children }: { roles?: Role[]; children: ReactNode }) {
@@ -23,6 +24,7 @@ export default function App() {
       <Route path="/login" element={<Login />} />
       <Route element={<Guard><Layout /></Guard>}>
         <Route index element={<Dashboard />} />
+        <Route path="reports" element={<Reports />} />
         <Route path="uploads" element={<Guard roles={["uploader", "admin"]}><Uploads /></Guard>} />
         <Route path="admin/users" element={<Guard roles={["admin"]}><AdminUsers /></Guard>} />
         <Route path="admin/widgets" element={<Guard roles={["admin"]}><AdminWidgets /></Guard>} />

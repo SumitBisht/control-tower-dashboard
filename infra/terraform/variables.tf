@@ -46,12 +46,12 @@ variable "backend_image_tag" {
 
 variable "task_cpu" {
   type    = number
-  default = 512
+  default = 1024
 }
 
 variable "task_memory" {
   type    = number
-  default = 1024
+  default = 4096
 }
 
 variable "desired_count" {

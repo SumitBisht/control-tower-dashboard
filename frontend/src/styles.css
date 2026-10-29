@@ -11,7 +11,9 @@ h2 { margin: 24px 0 12px; }
 
 .shell { display: grid; grid-template: "top top" 64px "side main" 1fr / 230px 1fr; min-height: 100vh; }
 .topbar { grid-area: top; background: #fff; display: flex; align-items: center; gap: 24px; padding: 0 24px; border-bottom: 1px solid var(--line); }
-.brand { font-size: 22px; color: var(--navy-2); } .brand b { font-weight: 800; }
+.brand { font-size: 22px; color: var(--navy-2); display: flex; align-items: center; gap: 10px; } .brand b { font-weight: 800; }
+.logo { height: 44px; width: auto; display: block; }
+.login h1 { display: flex; align-items: center; gap: 10px; white-space: nowrap; font-size: 20px; } .login .logo { height: 48px; }
 .title { flex: 1; font-weight: 700; color: var(--navy-2); display: flex; flex-direction: column; line-height: 1.1; }
 .title small { font-weight: 400; color: var(--muted); }
 .who { display: flex; align-items: center; gap: 10px; font-size: 14px; }
@@ -55,6 +57,8 @@ button.primary { background: var(--navy-2); color: #fff; border: 0; padding: 10p
 button.primary:disabled { opacity: .5; cursor: not-allowed; } button.sm { padding: 5px 10px; }
 button.link { background: none; border: 0; color: var(--navy-2); cursor: pointer; font: inherit; text-decoration: underline; padding: 0; }
 button.link.danger { color: var(--err); }
+.btn-row { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; } .spacer { flex: 1; }
+button:disabled { opacity: .5; cursor: not-allowed; }
 .check { display: flex; align-items: center; gap: 8px; margin: 6px 0; } .check.big { font-size: 16px; }
 .cols { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); padding-left: 26px; }
 .widget-list { max-width: 860px; }

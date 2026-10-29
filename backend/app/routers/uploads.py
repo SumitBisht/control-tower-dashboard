@@ -1,3 +1,7 @@
+import hashlib
+import os
+import tempfile
+
 from bson import ObjectId
 from bson.errors import InvalidId
 from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
@@ -7,25 +11,37 @@ from ..core.db import get_db
 from ..core.storage import get_storage
 from ..deps import require_admin, require_uploader
 from ..modules.registry import get_module
-from ..uploads import process_upload, serialize_upload
+from ..uploads import create_upload, serialize_upload, start_processing
 
 router = APIRouter(prefix="/uploads", tags=["uploads"])
 
 
-@router.post("")
+@router.post("", status_code=202)
 async def upload(file: UploadFile = File(...), module: str = Form("container_loading"), spv_name: str = Form(""),
                  project_name: str = Form(""), replace: bool = Form(False), user=Depends(require_uploader)):
+    """Receives the file (streamed to disk, size-limited) and starts background processing.
+    Poll GET /uploads/{id} until status is no longer PROCESSING."""
     m = get_module(module)
     if not m:
         raise HTTPException(404, "Unknown module")
     limit = get_settings().max_upload_mb * 1024 * 1024
-    data = bytearray()
-    while chunk := await file.read(1024 * 1024):  # bounded read: never hold an oversized file in memory
-        data += chunk
-        if len(data) > limit:
-            raise HTTPException(413, f"File is larger than the {get_settings().max_upload_mb} MB limit")
-    options = {"spv_name": spv_name.strip(), "project_name": project_name.strip(), "replace": replace}
-    return await process_upload(get_db(), m, user, file.filename or "upload.docx", bytes(data), options)
+    h, size = hashlib.sha256(), 0
+    fd, path = tempfile.mkstemp(suffix=".upload")
+    try:
+        with os.fdopen(fd, "wb") as out:
+            while chunk := await file.read(1024 * 1024):
+                size += len(chunk)
+                if size > limit:
+                    raise HTTPException(413, f"File is larger than the {get_settings().max_upload_mb} MB limit")
+                h.update(chunk)
+                out.write(chunk)
+        options = {"spv_name": spv_name.strip(), "project_name": project_name.strip(), "replace": replace}
+        up = await create_upload(get_db(), m, user, file.filename or "upload.docx", size, h.hexdigest(), options)
+    except BaseException:
+        os.remove(path)
+        raise
+    start_processing(get_db(), m, up, user, path)  # owns (and deletes) the temp file from here on
+    return serialize_upload(up)
 
 
 @router.get("")
@@ -53,6 +69,8 @@ async def get_upload(upload_id: str, user=Depends(require_uploader)):
 @router.delete("/{upload_id}", status_code=204)
 async def delete_upload(upload_id: str, admin=Depends(require_admin)):
     u = await _get(upload_id, admin)
+    if u["status"] == "PROCESSING":
+        raise HTTPException(409, "This upload is still being processed")
     m = get_module(u["module"])
     if m:
         await m.delete_upload_data(get_db(), get_storage(), upload_id)

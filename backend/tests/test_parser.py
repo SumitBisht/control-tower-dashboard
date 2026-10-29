@@ -76,3 +76,19 @@ def test_bad_container_row_collects_all_errors():
 def test_helpers():
     assert parse_date("06.02.2026").month == 2 and parse_date("5-Sep-2026").month == 9 and parse_date("xxxxx") is None
     assert status_of("No", "shockLabel") == "NA" and status_of("OK", "weather") == "OK" and status_of("broken", "weather") == "?"
+
+
+def test_premier_report_real_layout():
+    """Real DSR report: Client/Project/SPV table, no seal column, 'Container Number N' headings, PSI lots like '1, 2'."""
+    r = parse_container_loading(load("premier_report_slim.docx"))
+    assert r.ok, [i.message for i in r.errors]
+    rep, cs = r.data["report"], r.data["containers"]
+    assert rep["reportNo"] == "DSR-CLC-RES-2026-10-11" and rep["reportDate"].day == 11
+    assert rep["spvName"].startswith("Solapur Ganeko One") and rep["projectName"].startswith("Ganeko Two")
+    assert len(cs) == 25 and sum(c["moduleQty"] for c in cs) == 15066
+    assert round(sum(c["capacityKwp"] for c in cs), 2) == 9265.59
+    assert {c["psiLotNo"] for c in cs} == {"1", "1, 2", "2"} and ["1", "2"] in [c["psiLots"] for c in cs]
+    assert all(c["inspection"]["result"] == "PASS" for c in cs)
+    assert cs[0]["shipment"]["truckDeparture"].hour == 17
+    assert sum(len(c["photos"]) for c in cs) == 196
+    assert not codes(r, "WARNING") - {"SUMMARY_MISMATCH"}  # clean report: no warnings

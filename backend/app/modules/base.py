@@ -44,6 +44,7 @@ class UploadContext:
     file_hash: str
     user_email: str
     options: dict[str, Any]
+    path: str = ""  # temp file on local disk holding the uploaded document
 
 
 @dataclass
@@ -67,7 +68,7 @@ class ReportModule(ABC):
     widgets: list[WidgetDef]
 
     @abstractmethod
-    def parse(self, data: bytes, ctx: UploadContext) -> ParseResult:
+    def parse(self, source: "str | bytes", ctx: UploadContext) -> ParseResult:
         """Pure, synchronous parse. Must never write anything. Collect ALL issues rather than raising."""
 
     @abstractmethod

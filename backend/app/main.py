@@ -11,6 +11,7 @@ from .core.security import hash_password
 from .deps import get_current_user
 from .modules.registry import MODULES
 from .routers import admin, auth, uploads
+from .uploads import fail_interrupted_uploads
 from .widgets import get_widget_settings
 
 logging.basicConfig(level=logging.INFO)
@@ -24,6 +25,7 @@ async def bootstrap(db) -> None:
     await db.widget_settings.create_index([("module", 1), ("widgetKey", 1)], unique=True)
     for m in MODULES.values():
         await m.ensure_indexes(db)
+    await fail_interrupted_uploads(db)
     if not await db.users.find_one({"role": "admin"}):
         await db.users.insert_one({"email": s.admin_email.lower(), "name": s.admin_name, "role": "admin", "status": "active",
                                    "passwordHash": hash_password(s.admin_password), "createdAt": datetime.now(timezone.utc)})

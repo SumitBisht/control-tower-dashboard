@@ -1,16 +1,19 @@
-"""Generic upload pipeline: validate -> parse (pure) -> duplicate check -> persist -> log.
+"""Generic upload pipeline: receive -> validate -> parse (pure) -> duplicate check -> persist -> log.
+
+Uploads are processed in the background: POST /uploads returns immediately with status PROCESSING and the client
+polls GET /uploads/{id}. (Reports with embedded photos can be 100 MB+; this keeps the request short.)
 
 Graceful termination guarantees:
   * every failure path ends with the upload record in a terminal state (FAILED / SUCCESS*) and a readable log;
   * parsing never writes; persistence is rolled back on any exception, so a failed upload leaves no partial data;
-  * unexpected exceptions are logged server-side and surfaced to the user as a generic message (no stack traces).
+  * unexpected exceptions are logged server-side and surfaced to the user as a generic message (no stack traces);
+  * uploads orphaned by a server restart are marked FAILED on the next start (see fail_interrupted_uploads).
 """
 import asyncio
-import hashlib
-import io
 import logging
+import os
 import zipfile
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 
 from bson import ObjectId
 
@@ -19,20 +22,20 @@ from .core.storage import get_storage
 from .modules.base import Issue, ReportModule, UploadContext
 
 log = logging.getLogger("uploads")
+_tasks: set[asyncio.Task] = set()  # keep references so background tasks are not garbage collected
 
 
-def _validate_file(module: ReportModule, filename: str, data: bytes) -> list[Issue]:
+def _validate_file(module: ReportModule, filename: str, path: str) -> list[Issue]:
     s = get_settings()
     issues = []
     if not filename.lower().endswith(module.file_extensions):
         issues.append(Issue("ERROR", "BAD_EXTENSION", f"Only {', '.join(module.file_extensions)} files are accepted (got '{filename}')."))
-    if not data:
-        issues.append(Issue("ERROR", "EMPTY_FILE", "The uploaded file is empty."))
-    if issues:
         return issues
+    if os.path.getsize(path) == 0:
+        return [Issue("ERROR", "EMPTY_FILE", "The uploaded file is empty.")]
     if filename.lower().endswith(".docx"):
         try:
-            with zipfile.ZipFile(io.BytesIO(data)) as z:
+            with zipfile.ZipFile(path) as z:
                 infos = z.infolist()
                 if sum(i.file_size for i in infos) > s.max_uncompressed_mb * 1024 * 1024 or len(infos) > 10000:
                     issues.append(Issue("ERROR", "ARCHIVE_TOO_LARGE", "The document expands to an unreasonable size and was rejected."))
@@ -43,23 +46,33 @@ def _validate_file(module: ReportModule, filename: str, data: bytes) -> list[Iss
     return issues
 
 
-async def process_upload(db, module: ReportModule, user: dict, filename: str, data: bytes, options: dict) -> dict:
+async def create_upload(db, module: ReportModule, user: dict, filename: str, size: int, file_hash: str, options: dict) -> dict:
+    doc = {"module": module.key, "fileName": filename, "fileSize": size, "fileHash": file_hash, "uploadedBy": user["email"],
+           "uploadedAt": datetime.now(timezone.utc), "status": "PROCESSING", "options": options, "summary": None,
+           "logs": [Issue("INFO", "RECEIVED", f"Received '{filename}' ({size / 1024 / 1024:.1f} MB). Processing started.").to_log()]}
+    doc["_id"] = (await db.uploads.insert_one(doc)).inserted_id
+    return doc
+
+
+def start_processing(db, module: ReportModule, upload: dict, user: dict, path: str) -> None:
+    """Fire-and-forget; the temp file at `path` is removed when processing ends."""
+    task = asyncio.create_task(process_upload(db, module, upload, user, path))
+    _tasks.add(task)
+    task.add_done_callback(_tasks.discard)
+
+
+async def process_upload(db, module: ReportModule, upload: dict, user: dict, path: str) -> None:
     s = get_settings()
-    now = datetime.now(timezone.utc)
-    file_hash = hashlib.sha256(data).hexdigest()
-    upload = {"module": module.key, "fileName": filename, "fileSize": len(data), "fileHash": file_hash,
-              "uploadedBy": user["email"], "uploadedAt": now, "status": "PROCESSING", "options": options, "logs": [], "summary": None}
-    upload_id = str((await db.uploads.insert_one(upload)).inserted_id)
-    upload["_id"] = ObjectId(upload_id)
-    ctx = UploadContext(upload_id, filename, file_hash, user["email"], options)
+    upload_id = str(upload["_id"])
+    ctx = UploadContext(upload_id, upload["fileName"], upload["fileHash"], user["email"], upload["options"], path)
     storage = get_storage()
-    issues: list[Issue] = [Issue("INFO", "RECEIVED", f"Received '{filename}' ({len(data) / 1024:.0f} KB).")]
+    issues: list[Issue] = [Issue(i["level"], i["code"], i["message"]) for i in upload["logs"]]
     status, summary, persisted = "FAILED", None, False
     try:
-        issues += _validate_file(module, filename, data)
+        issues += _validate_file(module, upload["fileName"], path)
         if not any(i.level == "ERROR" for i in issues):
             try:
-                parsed = await asyncio.wait_for(asyncio.to_thread(module.parse, data, ctx), timeout=s.parse_timeout_seconds)
+                parsed = await asyncio.wait_for(asyncio.to_thread(module.parse, path, ctx), timeout=s.parse_timeout_seconds)
             except asyncio.TimeoutError:
                 issues.append(Issue("ERROR", "PARSE_TIMEOUT", f"Processing took longer than {s.parse_timeout_seconds}s and was stopped."))
                 parsed = None
@@ -74,12 +87,13 @@ async def process_upload(db, module: ReportModule, user: dict, filename: str, da
                     issues += await module.check_duplicates(db, parsed.data, ctx)
                     if not any(i.level == "ERROR" for i in issues):
                         try:
+                            persisted = True  # from here a failure must roll back
                             summary = await module.persist(db, storage, parsed.data, ctx)
-                            persisted = True
                         except Exception:  # noqa: BLE001
                             log.exception("persist failed for upload %s", upload_id)
                             issues.append(Issue("ERROR", "SAVE_FAILED", "Saving the data failed; the upload was rolled back and nothing was stored. Please retry."))
                             await _rollback(db, module, storage, upload_id)
+                            persisted = False
         errors = [i for i in issues if i.level == "ERROR"]
         if errors:
             status = "FAILED"
@@ -87,17 +101,32 @@ async def process_upload(db, module: ReportModule, user: dict, filename: str, da
         else:
             status = "SUCCESS_WITH_WARNINGS" if any(i.level == "WARNING" for i in issues) else "SUCCESS"
             issues.append(Issue("INFO", "DONE", "Upload completed and the dashboard is updated."))
-    except Exception:  # noqa: BLE001  (last-resort: never leave the record stuck in PROCESSING)
+    except Exception:  # noqa: BLE001  (last resort: never leave the record stuck in PROCESSING)
         log.exception("unexpected failure for upload %s", upload_id)
         if persisted:
             await _rollback(db, module, storage, upload_id)
         issues.append(Issue("ERROR", "UNEXPECTED", "An unexpected error occurred. Nothing was saved. Please try again or contact an administrator."))
         status, summary = "FAILED", None
     finally:
-        await db.uploads.update_one({"_id": upload["_id"]}, {"$set": {
-            "status": status, "summary": summary, "finishedAt": datetime.now(timezone.utc),
-            "logs": [i.to_log() for i in issues]}})
-    return serialize_upload(await db.uploads.find_one({"_id": upload["_id"]}))
+        try:
+            await db.uploads.update_one({"_id": upload["_id"]}, {"$set": {
+                "status": status, "summary": summary, "finishedAt": datetime.now(timezone.utc),
+                "logs": [i.to_log() for i in issues]}})
+        finally:
+            try:
+                os.remove(path)
+            except OSError:
+                pass
+
+
+async def fail_interrupted_uploads(db) -> None:
+    """On startup: uploads still PROCESSING were interrupted by a restart/crash."""
+    log_entry = Issue("ERROR", "INTERRUPTED", "Processing was interrupted by a server restart. Nothing was saved; please upload again.").to_log()
+    cutoff = datetime.now(timezone.utc) - timedelta(seconds=get_settings().parse_timeout_seconds + 300)  # other instances may be mid-upload
+    res = await db.uploads.update_many({"status": "PROCESSING", "uploadedAt": {"$lt": cutoff}}, {"$set": {"status": "FAILED", "finishedAt": datetime.now(timezone.utc)},
+                                                                   "$push": {"logs": log_entry}})
+    if res.modified_count:
+        log.warning("marked %d interrupted upload(s) as FAILED", res.modified_count)
 
 
 async def _rollback(db, module, storage, upload_id: str) -> None:

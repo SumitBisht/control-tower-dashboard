@@ -58,7 +58,7 @@ Create a real admin account in **Users**, then disable or re-password the seeded
 | Size / region | `atlas_instance_size`, `task_cpu`, `task_memory`, `desired_count`, `aws_region` + `atlas_region` |
 
 ## Cost (rough, ap-south-1, always-on)
-Atlas M10 ≈ US$60/mo · NAT gateway ≈ US$35/mo · ALB ≈ US$20/mo · Fargate 0.5 vCPU/1 GB ≈ US$18/mo · S3/CloudFront/logs: a few dollars.
+Atlas M10 ≈ US$60/mo · NAT gateway ≈ US$35/mo · ALB ≈ US$20/mo · Fargate 1 vCPU/4 GB ≈ US$50/mo (reports with photos are ~100 MB; 4 GB leaves headroom) · S3/CloudFront/logs: a few dollars.
 Use a smaller Atlas tier or a shared tier for dev by changing `atlas_instance_size`.
 
 ## Known limitations / hardening to do before production

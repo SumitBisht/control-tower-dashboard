@@ -48,6 +48,33 @@ export async function api<T = any>(path: string, opts: { method?: string; json?:
   return data as T;
 }
 
+/** Authenticated file download (the bearer token cannot be sent via a plain <a href>). */
+export async function download(path: string, fallbackName: string): Promise<void> {
+  const t = tokenStore.get();
+  let res: Response;
+  try {
+    res = await fetch(BASE + path, { headers: t ? { Authorization: `Bearer ${t}` } : {} });
+  } catch {
+    throw new ApiError(0, "Cannot reach the server. Check your connection and try again.");
+  }
+  if (!res.ok) throw new ApiError(res.status, errorText(await res.json().catch(() => null), res.status));
+  const m = /filename="?([^";]+)"?/.exec(res.headers.get("Content-Disposition") ?? "");
+  const url = URL.createObjectURL(await res.blob());
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = m?.[1] ?? fallbackName;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+}
+
+export interface ReportRow {
+  id: string; reportNo: string; reportDate: string | null; spvName: string; projectName: string; manufacturer: string;
+  conclusion: string | null; models: string[]; containers: number; modules: number; capacityMwp: number;
+  failedContainers: number; loadingFrom: string; loadingTo: string; hasSource: boolean; sourceFileName?: string;
+}
+
 export type Role = "viewer" | "uploader" | "admin";
 export interface User { id: string; email: string; name: string; role: Role; status: "pending" | "active" | "disabled"; createdAt?: string }
 export interface LogEntry { ts: string; level: "INFO" | "WARNING" | "ERROR"; code: string; message: string }

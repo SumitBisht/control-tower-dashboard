@@ -7,6 +7,7 @@ from .config import get_settings
 
 class Storage(Protocol):
     def save(self, key: str, data: bytes, content_type: str | None = None) -> None: ...
+    def save_file(self, key: str, path: str, content_type: str | None = None) -> None: ...
     def load(self, key: str) -> bytes: ...
     def delete_prefix(self, prefix: str) -> None: ...
 
@@ -25,6 +26,13 @@ class LocalStorage:
         p = self._path(key)
         p.parent.mkdir(parents=True, exist_ok=True)
         p.write_bytes(data)
+
+    def save_file(self, key, path, content_type=None):
+        import shutil
+
+        p = self._path(key)
+        p.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(path, p)
 
     def load(self, key):
         return self._path(key).read_bytes()
@@ -48,6 +56,10 @@ class S3Storage:
     def save(self, key, data, content_type=None):
         extra = {"ContentType": content_type} if content_type else {}
         self.s3.put_object(Bucket=self.bucket, Key=key, Body=data, **extra)
+
+    def save_file(self, key, path, content_type=None):
+        extra = {"ExtraArgs": {"ContentType": content_type}} if content_type else {}
+        self.s3.upload_file(path, self.bucket, key, **extra)
 
     def load(self, key):
         return self.s3.get_object(Bucket=self.bucket, Key=key)["Body"].read()
