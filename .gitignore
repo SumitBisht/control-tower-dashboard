@@ -51,4 +51,4 @@ desktop.ini
 
 # ---- Claude Code local settings ----
 .claude/settings.local.json
-.terraform.locl.hcl
+.terraform.lock.hcl
