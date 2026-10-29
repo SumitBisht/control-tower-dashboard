@@ -79,3 +79,6 @@ Regenerate the filled sample report: `python tests/make_sample.py`.
 ## Client / SPV name
 Set `CLIENT_NAME` (env or `backend/.env`; `client_name` in Terraform) to fix the client name shown/stored on reports
 (otherwise the `Client` row of the document is used). SPV precedence: upload form → SPV in the document → `CLIENT_NAME` → client in the document.
+
+## License
+Licensed under the **GNU General Public License, version 2 only** (SPDX: `GPL-2.0-only`). See [LICENSE](LICENSE).
