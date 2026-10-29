@@ -48,6 +48,13 @@ api.include_router(admin.router)
 api.include_router(uploads.router)
 
 
+@api.get("/config")
+async def public_config():
+    """Non-secret display settings (no auth: the login page uses it too)."""
+    s = get_settings()
+    return {"clientName": s.client_name, "appName": s.app_name}
+
+
 @api.get("/modules")
 async def list_modules(user=Depends(get_current_user)):
     out = []

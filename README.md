@@ -57,8 +57,9 @@ Frontend: add a nav entry in `components/Layout.tsx` and a page. `src/api.ts` ha
 Regenerate the filled sample report: `python tests/make_sample.py`.
 
 ## AWS
-Terraform (MongoDB Atlas + ECS Fargate + S3/CloudFront) is in `infra/terraform`; see **[docs/AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md)**
-for architecture, first-deploy steps, cost and hardening notes.
+- **Free tier (recommended to start):** one EC2 server + Atlas M0 + S3 - see **[docs/AWS_FREE_TIER.md](docs/AWS_FREE_TIER.md)**
+  (`infra/terraform-free`, `docker-compose.free.yml`).
+- **Production layout** (ECS Fargate + ALB + CloudFront + Atlas M10, ~US$135/month): **[docs/AWS_DEPLOYMENT.md](docs/AWS_DEPLOYMENT.md)** (`infra/terraform`).
 
 ## Client / SPV name
 Set `CLIENT_NAME` (env or `backend/.env`; `client_name` in Terraform) to fix the client name shown/stored on reports

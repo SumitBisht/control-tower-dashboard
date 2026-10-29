@@ -5,12 +5,14 @@ services:
     ports: ["27017:27017"]
   backend:
     build: ./backend
+    # App settings (CLIENT_NAME, ADMIN_*, JWT_SECRET, limits...) come from backend/.env - one file for local and Docker.
+    # Only values that differ inside Docker are set below (they override the file).
+    env_file:
+      - path: ./backend/.env
+        required: false
     environment:
       MONGODB_URI: mongodb://mongo:27017
-      CLIENT_NAME: ${CLIENT_NAME:-}
-      JWT_SECRET: ${JWT_SECRET:-dev-only-change-me}
-      ADMIN_EMAIL: ${ADMIN_EMAIL:-admin@example.com}
-      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-ChangeMe123!}
+      STORAGE_LOCAL_DIR: /srv/storage
       CORS_ORIGINS: '["http://localhost:8080"]'
     volumes: [uploads:/srv/storage]
     depends_on: [mongo]

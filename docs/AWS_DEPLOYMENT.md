@@ -1,4 +1,7 @@
-# AWS deployment (MongoDB Atlas)
+# AWS deployment - production layout (MongoDB Atlas)
+
+> Looking for the **free-tier** setup (single EC2 + Atlas M0)? See [AWS_FREE_TIER.md](AWS_FREE_TIER.md). This document is the
+> managed, highly-available layout and costs roughly US$135/month.
 
 > **Status:** the Terraform in `infra/terraform` has **not been applied or `terraform validate`d** by its author
 > (no Terraform/AWS access was available). Treat the first `terraform plan` as a review step.

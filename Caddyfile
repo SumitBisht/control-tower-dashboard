@@ -1,0 +1,5 @@
+# Free-tier deployment: Caddy terminates HTTPS (automatic Let's Encrypt certificate) and forwards to the frontend container.
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy frontend:80
+}

@@ -1,0 +1,9 @@
+atlas_org_id = "REPLACE_WITH_ATLAS_ORG_ID"
+key_name     = "my-ec2-keypair"        # existing EC2 key pair in aws_region
+ssh_cidr     = "203.0.113.7/32"        # your public IP (search "what is my ip") + /32
+admin_email  = "admin@yourcompany.com"
+client_name  = "Resolven"
+aws_region   = "ap-south-1"
+atlas_region = "AP_SOUTH_1"
+# instance_type = "t3.micro"
+# domain        = "control.example.com"  # optional; blank = <ip>.sslip.io

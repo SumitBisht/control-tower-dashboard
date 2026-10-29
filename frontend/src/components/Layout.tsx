@@ -1,6 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useAuth } from "../auth";
 import logo from "../assets/logo.jpeg";
+import { useAppConfig } from "../useAppConfig";
 
 // Add future modules/pages here. `roles` limits visibility; `soon` renders a disabled placeholder.
 const NAV = [
@@ -13,11 +14,14 @@ const NAV = [
 
 export default function Layout() {
   const { user, logout } = useAuth();
+  const { clientName } = useAppConfig();
   return (
     <div className="shell">
       <header className="topbar">
         <div className="brand"><img src={logo} alt="DSR" className="logo" /> <b>CONTROL TOWER</b></div>
         <div className="title">CONTAINER LOADING MONITORING<small>PV MODULES</small></div>
+        {clientName && <div className="client">{clientName}</div>}
+        
         <div className="who">
           <span>{user?.name}</span> <em className="role">{user?.role}</em>
           <button className="link" onClick={logout}>Sign out</button>

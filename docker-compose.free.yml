@@ -1,0 +1,28 @@
+# Free-tier deployment (single EC2 + MongoDB Atlas M0). No Mongo container: the database is Atlas.
+#   docker compose -f docker-compose.free.yml up -d --build
+# Requires: backend/.env (MONGODB_URI, secrets, ...) and a root .env containing DOMAIN=<site hostname>.
+services:
+  backend:
+    build: ./backend
+    restart: unless-stopped
+    env_file: ./backend/.env
+    environment:
+      STORAGE_LOCAL_DIR: /srv/storage
+    volumes: [uploads:/srv/storage]
+  frontend:
+    build: ./frontend
+    restart: unless-stopped
+    depends_on: [backend]
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on: [frontend]
+    ports: ["80:80", "443:443"]
+    environment:
+      DOMAIN: ${DOMAIN:?set DOMAIN in .env}
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+volumes:
+  uploads:
+  caddy_data:
