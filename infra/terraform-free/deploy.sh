@@ -8,6 +8,15 @@ IP="$(terraform -chdir=infra/terraform-free output -raw public_ip)"
 URL="$(terraform -chdir=infra/terraform-free output -raw site_url)"
 SSH=(ssh -i "$KEY" -o StrictHostKeyChecking=accept-new "ec2-user@$IP")
 
+echo ">> Checking SSH access to $IP"
+if ! "${SSH[@]}" -o ConnectTimeout=15 true 2>/tmp/deploy-ssh.err; then
+  echo "Cannot SSH to $IP:"; sed 's/^/   /' /tmp/deploy-ssh.err
+  echo "Most likely your public IP changed. Port 22 only allows ssh_cidr from terraform.tfvars."
+  echo "Your current IP: $(curl -s -m 10 https://checkip.amazonaws.com || echo unknown)  -> set ssh_cidr = \"<ip>/32\" and run:"
+  echo "   terraform -chdir=infra/terraform-free apply -target=aws_security_group.this"
+  exit 1
+fi
+
 echo ">> Waiting for first-boot setup on $IP"
 for _ in $(seq 1 60); do "${SSH[@]}" 'test -f /var/lib/cloud/control-tower-ready' 2>/dev/null && break; sleep 10; done
 "${SSH[@]}" 'test -f /var/lib/cloud/control-tower-ready' || { echo "Server not ready; see /var/log/control-tower-bootstrap.log on it"; exit 1; }
