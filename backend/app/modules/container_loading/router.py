@@ -72,13 +72,14 @@ def build_router(module) -> APIRouter:
             for t in res["trend"]:
                 by_date.setdefault(_iso(t["_id"]["d"]), {})[f"{t['_id']['w']:g} Wp"] = t["modules"]
             series = [f"{x:g} Wp" for x in wps]
-            running = {s: 0 for s in series}
-            data = []
-            for d, v in sorted(by_date.items()):  # cumulative modules loaded up to each date
-                for s in series:
-                    running[s] += v.get(s, 0)
-                data.append({"date": d, **running})
-            w["loading_trend"] = {"series": series, "cumulative": True, "data": data}
+            daily, cumulative, running = [], [], {x: 0 for x in series}
+            for d, v in sorted(by_date.items()):
+                daily.append({"date": d, **{x: v.get(x, 0) for x in series}})  # modules loaded on that date
+                for x in series:
+                    running[x] += v.get(x, 0)
+                cumulative.append({"date": d, **running})  # running total up to and including that date
+            # the client toggles between the two views without another request; `data` stays the daily view
+            w["loading_trend"] = {"series": series, "data": daily, "cumulative_data": cumulative}
         if "product_summary" in visible:
             c = cols["product_summary"]
             rows = [{"product_type": p["_id"], "containers": p["containers"], "modules": p["modules"],

@@ -1,8 +1,8 @@
-import { ReactNode } from "react";
-import { Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
+import { ReactNode, useState } from "react";
+import { Bar, BarChart, CartesianGrid, Legend, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 
 export const WIDGET_TITLES: Record<string, string> = {
-  loading_trend: "Loading Trend by Date (cumulative modules)",
+  loading_trend: "Loading Trend by Date",
   product_summary: "Product-wise Summary",
   recent_containers: "Recent Containers Loaded",
   checklist_summary: "Inspection Checklist Summary",
@@ -51,19 +51,45 @@ export function Kpi({ id, data }: { id: keyof typeof KPI; data: any }) {
 
 const PALETTE = ["#17658f", "#5aa9ff", "#2e7d6b", "#e0a030", "#8a63d2"];
 
-export function TrendChart({ data }: { data: { series: string[]; data: any[] } }) {
+interface TrendData { series: string[]; data: any[]; cumulative_data?: any[] }
+
+/** Stacked daily bars. If the server also sent `cumulative_data`, a toggle switches to cumulative lines (client-side, no extra request). */
+export function TrendChart({ data }: { data: TrendData }) {
+  const [view, setView] = useState<"daily" | "cumulative">("daily");
   if (!data.data.length) return <Empty />;
+  const canToggle = !!data.cumulative_data;
+  const cumulative = canToggle && view === "cumulative";
   return (
-    <ResponsiveContainer width="100%" height={260}>
-      <BarChart data={data.data}>
-        <CartesianGrid strokeDasharray="3 3" vertical={false} />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-        {data.series.map((s, i) => <Bar key={s} dataKey={s} stackId="a" fill={PALETTE[i % PALETTE.length]} />)}
-      </BarChart>
-    </ResponsiveContainer>
+    <>
+      {canToggle && (
+        <div className="seg" role="group" aria-label="Chart view">
+          <button type="button" className={view === "daily" ? "on" : ""} aria-pressed={view === "daily"} onClick={() => setView("daily")}>Daily</button>
+          <button type="button" className={view === "cumulative" ? "on" : ""} aria-pressed={view === "cumulative"} onClick={() => setView("cumulative")}>Cumulative</button>
+        </div>
+      )}
+      <ResponsiveContainer width="100%" height={260}>
+        {cumulative ? (
+          <LineChart data={data.cumulative_data!.map((r) => ({ ...r, Total: data.series.reduce((t, k) => t + (r[k] ?? 0), 0) }))}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {data.series.map((s, i) => <Line key={s} type="monotone" dataKey={s} stroke={PALETTE[i % PALETTE.length]} strokeWidth={2} dot />)}
+            {data.series.length > 1 && <Line type="monotone" dataKey="Total" stroke="#14213d" strokeWidth={2} strokeDasharray="5 4" dot />}
+          </LineChart>
+        ) : (
+          <BarChart data={data.data}>
+            <CartesianGrid strokeDasharray="3 3" vertical={false} />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            {data.series.map((s, i) => <Bar key={s} dataKey={s} stackId="a" fill={PALETTE[i % PALETTE.length]} />)}
+          </BarChart>
+        )}
+      </ResponsiveContainer>
+    </>
   );
 }
 

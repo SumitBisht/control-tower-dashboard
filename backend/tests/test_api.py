@@ -97,7 +97,7 @@ async def test_full_flow(client):
     assert w["kpi_containers"]["value"] == 12 and w["kpi_modules"]["value"] == 8640
     assert w["kpi_capacity"]["value"] == 4.752
     assert w["product_summary"]["rows"][0]["containers"] == 12
-    assert w["loading_trend"]["cumulative"] and w["loading_trend"]["data"][-1]["550 Wp"] == 8640
+    assert w["loading_trend"]["data"][-1]["550 Wp"] == 8640 and w["loading_trend"]["cumulative_data"][-1]["550 Wp"] == 8640
     assert {r["item"]: r["status"] for r in w["checklist_summary"]["rows"]}["Shock Label Validations"] == "NA"
     assert (await c.get("/container_loading/dashboard?project=Nope", headers=viewer)).json()["widgets"]["kpi_containers"]["value"] == 0
 
@@ -122,7 +122,9 @@ async def test_premier_report_dashboard_and_reports_tab(client):
     w = (await c.get("/container_loading/dashboard", headers=admin)).json()["widgets"]
     assert w["kpi_containers"]["value"] == 25 and w["kpi_modules"]["value"] == 15066 and w["kpi_capacity"]["value"] == 9.266
     assert w["kpi_result"]["value"] == 100.0
-    assert w["loading_trend"]["data"][-1]["615 Wp"] == 15066 and len(w["loading_trend"]["data"]) == 3
+    lt = w["loading_trend"]
+    assert [d["615 Wp"] for d in lt["data"]] == [8060, 4960, 2046]  # daily output per loading date (default view)
+    assert [d["615 Wp"] for d in lt["cumulative_data"]] == [8060, 13020, 15066]  # running total for the toggle
     f = (await c.get("/container_loading/filters", headers=admin)).json()
     assert f["psi_lot"] == ["1", "2"] and f["model"] == ["PE-132-615THGB-G12R"]
     # PSI lot "1, 2" containers belong to both lots
