@@ -88,3 +88,32 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; margin: 4px 4px 8px; }
 .seg button { border: 0; background: #fff; padding: 5px 14px; font: inherit; font-size: 13px; cursor: pointer; color: var(--navy-2); }
 .seg button.on { background: var(--navy-2); color: #fff; }
+
+/* ---- collapsible left menu ---- */
+.shell { transition: grid-template-columns .15s ease; }
+.shell.collapsed { grid-template-columns: 64px 1fr; }
+.sidebar { overflow: hidden; }
+.nav { display: flex; align-items: center; gap: 12px; position: relative; }
+.nav .icon { display: inline-flex; flex: 0 0 20px; }
+.nav .label { flex: 1; min-width: 0; line-height: 1.25; }
+.nav.soon { opacity: .75; }
+.nav .tag { font-style: normal; font-size: 10px; background: #2c4a8a; color: #dbe5fb; border-radius: 8px; padding: 1px 7px; text-transform: none; }
+.nav.active .tag { background: var(--bg); color: var(--navy); }
+.nav-toggle { display: flex; align-items: center; gap: 12px; width: 100%; background: transparent; border: 0; color: #8fa3cc; cursor: pointer;
+  padding: 8px 14px; margin-bottom: 8px; border-radius: 8px; font: inherit; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+.nav-toggle:hover { background: rgba(255, 255, 255, .08); color: #fff; }
+.shell.collapsed .sidebar { padding-left: 8px; padding-right: 8px; }
+.shell.collapsed .nav, .shell.collapsed .nav-toggle { justify-content: center; padding-left: 0; padding-right: 0; }
+.shell.collapsed .label { display: none; }
+.shell.collapsed .nav .tag { position: absolute; top: 3px; right: 4px; width: 8px; height: 8px; padding: 0; font-size: 0; background: #e0a030; }
+.shell.collapsed .nav-group { border-top: 1px solid #2c4a8a; margin: 12px 8px; height: 0; }
+.coming-soon { max-width: 640px; }
+@media (max-width: 800px) {
+  .shell, .shell.collapsed { grid-template-columns: 1fr; }
+  .nav-toggle { width: auto; }
+  .shell.collapsed .nav-group { border: 0; margin: 0; }
+}
+
+/* toggle is just a chevron: « when expanded (right-aligned in the column), » when collapsed (centered) */
+.nav-toggle { justify-content: flex-end; }
+.shell.collapsed .nav-toggle { justify-content: center; }
