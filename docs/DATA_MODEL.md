@@ -36,3 +36,23 @@ shows the latest report for each `(projectName, lotNo)`.
 | `psi_details` | report | test conditions + equipment calibration dates, sun-simulator checks, maximum-power rows (per module) + min/max/avg, per-test NC summaries and module lists, insulation, wet leakage, bi-faciality, mechanical loads, robustness, low irradiance |
 
 Same rules as above: every row carries `reportId/reportNo/reportDate/spvName/projectName/manufacturer/lotNo/uploadId`; no media and no original `.docx` are stored.
+
+## BOM Assessment (`bom_*`)
+One report per verification visit. Every report is kept (batches change between visits); the dashboard lists all reports matching the filters.
+
+| Collection | One document per | Purpose |
+|---|---|---|
+| `bom_reports` | report | header (client, SPV, project, manufacturer, location, workshop), roll-up `summary` (materials, passed, underReview, deviations, storage counts, avg temperature/humidity) |
+| `bom_materials` | material | `bomMake/actualMake`, `bomOrigin/actualOrigin`, `batchNo`, `result` PASS/FAIL/UNDER REVIEW, `remarks`, `deviation` flag |
+| `bom_storage` | stored material | `temperatureC`, `humidityPct`, `expiry`, `observation`, `result`, `remarks` |
+
+## Pre-Production Audit (`ppa_*`)
+One report per audit. Every report is kept.
+
+| Collection | One document per | Purpose |
+|---|---|---|
+| `ppa_reports` | report | header, `audit{factory,site,address,type,sequence,benchmark,scope,auditDate}`, `conclusion`, `signatories`, `extra.sections` (checks/closed per section), roll-up `summary` |
+| `ppa_checks` | readiness check | `section`, `item`, `requirement`, `evidence`, `status` CLOSED/OPEN, `statusNote` (e.g. "First 50MW") |
+| `ppa_nc` | non-conformity | `line`, `date`, `description`, `severity` Major/Minor, `process`, `status`, `statusNote` |
+
+Same rules as above: every row carries `reportId/reportNo/reportDate/spvName/projectName/manufacturer/uploadId`; no media and no original `.docx` are stored.

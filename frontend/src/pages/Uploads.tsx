@@ -57,6 +57,9 @@ export default function Uploads() {
     qc.invalidateQueries({ queryKey: ["psi-dashboard"] });
     qc.invalidateQueries({ queryKey: ["psi-filters"] });
     qc.invalidateQueries({ queryKey: ["psi-reports"] });
+    qc.invalidateQueries({ queryKey: ["simple-dashboard"] });
+    qc.invalidateQueries({ queryKey: ["simple-filters"] });
+    qc.invalidateQueries({ queryKey: ["simple-reports"] });
     if (result.status !== "FAILED") { setFile(null); if (fileRef.current) fileRef.current.value = ""; }
   }, [result?.status]); // eslint-disable-line react-hooks/exhaustive-deps
 

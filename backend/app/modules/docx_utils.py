@@ -160,3 +160,75 @@ def records(g: list[list[str]], header_rows: int) -> tuple[list[dict[str, Any]],
             continue
         out.append({keys[j]: val(r[j]) for j in range(min(len(keys), len(r)))})
     return out, overall
+
+
+def open_docx(source, title_key: str, title: str):
+    """Open an uploaded .docx and check the report title. Returns (doc, blocks, error Issue | None)."""
+    import io
+    import zipfile
+
+    from docx import Document
+
+    from .base import Issue
+    src = io.BytesIO(source) if isinstance(source, (bytes, bytearray)) else str(source)
+    if not zipfile.is_zipfile(src):
+        return None, [], Issue("ERROR", "NOT_DOCX", "The file is not a valid .docx document (legacy .doc, corrupted, or renamed file).")
+    if isinstance(src, io.BytesIO):
+        src.seek(0)
+    try:
+        doc = Document(src)
+    except Exception as e:  # noqa: BLE001
+        return None, [], Issue("ERROR", "DOCX_UNREADABLE", f"The Word document could not be opened: {type(e).__name__}.")
+    blocks = list(iter_blocks(doc))
+    titles = [norm_key(b.text) for b in blocks[:40] if isinstance(b, Paragraph)]
+    if not any(title_key in t for t in titles):
+        return None, [], Issue("ERROR", "WRONG_REPORT_TYPE", f"This does not look like a {title} report (title not found). Check you selected the right module for this file.")
+    return doc, blocks, None
+
+
+def read_header(blocks, issues: list, report: dict) -> bool:
+    """Fill report{client, spvName, projectName, reportNo, reportDate, manufacturer, location, workshop} from the cover tables.
+    Appends ERROR/WARNING issues; returns False when the report can't be identified."""
+    from .base import Issue
+    info: dict[str, str] = {}
+    for b in blocks:
+        if not isinstance(b, Table):
+            continue
+        try:
+            kv = kv_of(b)
+        except Exception:  # noqa: BLE001
+            continue
+        if "report no" in kv:
+            info = kv
+        if "spv name" in kv or "project name" in kv:
+            report["client"] = {"name": kv.get("client", "")}
+            report["spvName"], report["projectName"] = kv.get("spv name", "").rstrip(" -"), kv.get("project name", "").rstrip(" -")
+            for row in b.rows:  # the SPV cell can list several SPVs on separate lines: the first one is the SPV of this report
+                cells = [c.text for c in row.cells]
+                if cells and norm_key(cells[0]) == "spv name" and len(cells) > 1:
+                    first = next((ln for ln in (strip_colon(x) for x in cells[1].splitlines()) if ln), "")
+                    report["spvName"] = first.rstrip(" -") or report["spvName"]
+    if not info:
+        issues.append(Issue("ERROR", "REPORT_INFO_MISSING", "The 'Report No. / Report Date / Manufacturer / Location / Workshop' table was not found."))
+        return False
+    ok = True
+    report_no = info.get("report no", "")
+    if is_blank(report_no):
+        issues.append(Issue("ERROR", "REPORT_NO_MISSING", "Report No. is empty or still a placeholder ('xxxxx'). Fill it in before uploading."))
+        ok = False
+    rd = parse_date(info.get("report date", ""))
+    if not rd:
+        issues.append(Issue("ERROR", "REPORT_DATE_INVALID", f"Report Date '{info.get('report date', '')}' is not a valid date (expected e.g. 24-09-2026)."))
+        ok = False
+    for k, label in (("manufacturer", "Manufacturer"), ("location", "Location"), ("workshop", "Workshop")):
+        v = info.get(k, "")
+        if is_blank(v):
+            issues.append(Issue("WARNING", "HEADER_FIELD_BLANK", f"{label} is blank or a placeholder."))
+            v = "Unknown" if k == "manufacturer" else ""
+        report[k] = v
+    report.update(reportNo=report_no, reportDate=rd)
+    if not report.get("spvName"):
+        issues.append(Issue("WARNING", "SPV_MISSING", "SPV name not found in the document; set it on the upload form."))
+    if not report.get("projectName"):
+        issues.append(Issue("WARNING", "PROJECT_MISSING", "Project name not found in the document; set it on the upload form."))
+    return ok

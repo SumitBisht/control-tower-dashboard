@@ -3,6 +3,8 @@ import { FormEvent, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { api, download, ReportRow } from "../api";
 import { MODULES } from "../modules";
+import AuditReports from "./AuditReports";
+import BomReports from "./BomReports";
 import PreShipmentReports from "./PreShipmentReports";
 import ProductionReports from "./ProductionReports";
 
@@ -104,7 +106,8 @@ export default function Reports() {
       <label className="inline-select">Report type
         <select value={key} onChange={(e) => setParams({ module: e.target.value })}>{MODULES.map((m) => <option key={m.key} value={m.key}>{m.title}</option>)}</select>
       </label>
-      {key === "production_supervision" ? <ProductionReports /> : key === "pre_shipment" ? <PreShipmentReports /> : <ContainerReports />}
+      {key === "production_supervision" ? <ProductionReports /> : key === "pre_shipment" ? <PreShipmentReports /> : key === "bom_verification" ? <BomReports />
+        : key === "pre_production_audit" ? <AuditReports /> : <ContainerReports />}
     </div>
   );
 }

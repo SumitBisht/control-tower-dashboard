@@ -32,8 +32,8 @@ export const chevrons = icons.chevrons;
 
 // The left-hand menu, in display order. Add future modules/pages here.
 export const NAV: NavItem[] = [
-  { to: "/preproductionaudit", label: "Pre-Production Audit", icon: icons.audit, soon: true },
-  { to: "/bomassessment", label: "BOM Assessment", icon: icons.bom, soon: true },
+  { to: "/preproductionaudit", label: "Pre-Production Audit", icon: icons.audit },
+  { to: "/bomassessment", label: "BOM Assessment", icon: icons.bom },
   { to: "/production", label: "Production Supervision", icon: icons.production },
   { to: "/preshipment", label: "Pre-Shipment Inspection", icon: icons.shipment },
   { to: "/containerLoadingCheck", label: "Container Loading Check", icon: icons.container },

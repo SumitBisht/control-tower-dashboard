@@ -4,7 +4,8 @@ import { Role } from "./api";
 import { useAuth } from "./auth";
 import Layout from "./components/Layout";
 import { HOME } from "./components/nav";
-import ComingSoon from "./pages/ComingSoon";
+import AuditDashboard from "./pages/AuditDashboard";
+import BomDashboard from "./pages/BomDashboard";
 import AdminUsers from "./pages/AdminUsers";
 import AdminWidgets from "./pages/AdminWidgets";
 import Dashboard from "./pages/Dashboard";
@@ -29,8 +30,8 @@ export default function App() {
       <Route element={<Guard><Layout /></Guard>}>
         <Route index element={<Navigate to={HOME} replace />} />
         <Route path="containerLoadingCheck" element={<Dashboard />} />
-        <Route path="preproductionaudit" element={<ComingSoon title="Pre-Production Audit" note="The Pre-Production Audit module is planned but has no report template yet." />} />
-        <Route path="bomassessment" element={<ComingSoon title="BOM Assessment" note="The BOM Assessment module has no report template yet, so there is nothing to upload or show." />} />
+        <Route path="preproductionaudit" element={<AuditDashboard />} />
+        <Route path="bomassessment" element={<BomDashboard />} />
         <Route path="production" element={<ProductionDashboard />} />
         <Route path="preshipment" element={<PreShipmentDashboard />} />
         <Route path="reports" element={<Reports />} />

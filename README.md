@@ -57,6 +57,17 @@ statistics and the test-equipment calibration status (flags calibrations due bef
 (*Pre-Shipment Inspection*). Checks raised in the upload log include sampling below the AQL plan and lot-size / MWp mismatches.
 Photos are ignored and original files are not kept (as for Production Supervision). Report Master exports every section to Excel.
 
+## BOM Assessment and Pre-Production Audit modules
+Menu items `BOM Assessment` (*BOM Verification Report (Store)*) and `Pre-Production Audit` (*Pre-Production Audit Report*), one Word file per visit.
+- **BOM Assessment**: materials as per BOM vs as per actual (make/model, country of origin, batch no, result) and storage conditions (temperature,
+  humidity, observations). KPIs describe the most recent verification; the tables list every verification so batch changes can be traced. The upload
+  log warns about BOM deviations, materials marked Pass despite a deviation, and missing batch numbers.
+- **Pre-Production Audit**: readiness checklist by section (raw material, equipment, manpower, testing, packaging, dispatch), non-conformities
+  (severity, process, closure status), audit information and conclusion. The upload log warns when the conclusion is READY while checks or
+  non-conformities are still open.
+Photos are ignored and original files are not kept. Report Master exports every section to Excel. Both modules are built on `modules/simple.py`
+(one report + child tables), the quickest starting point for the next report type.
+
 ## Reports tab
 Search containers/reports by loading date range, product type (model), manufacturer, SPV, project, PSI lot and free text
 (report no, container no, seal no...). From the results: download the **original Word report**, or **export Excel/CSV**

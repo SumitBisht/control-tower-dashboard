@@ -35,6 +35,19 @@ const KPI = {
   kpi_ncs: { label: "Non-Conformities", tone: "amber", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.major} major · ${d.minor} minor` },
   kpi_power_dev: { label: "Avg Power Difference", tone: "green", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
     sub: (d: any) => `${d.outOfTolerance} module(s) outside ±1% (pre vs during PDI)` },
+  // BOM Assessment
+  kpi_bom_reports: { label: "BOM Verifications", tone: "blue", fmt: (d: any) => `${d.value}`, sub: (d: any) => (d.latest ? `latest on ${d.latest}` : "none yet") },
+  kpi_bom_pass: { label: "Materials Passed", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
+    sub: (d: any) => `${d.passed} of ${d.materials} materials${d.underReview ? ` · ${d.underReview} under review` : ""} (latest)` },
+  kpi_bom_deviations: { label: "BOM Deviations", tone: "amber", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.failed} failed · ${d.underReview} under review (latest)` },
+  kpi_bom_storage: { label: "Storage Conditions OK", tone: "green", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
+    sub: (d: any) => (d.items ? `${d.items - d.issues} of ${d.items} OK · avg ${d.avgTempC ?? "—"} °C, ${d.avgHumidityPct ?? "—"} % RH (latest)` : "no storage data") },
+  // Pre-Production Audit
+  kpi_ppa_audits: { label: "Audits", tone: "blue", fmt: (d: any) => `${d.value}`, sub: (d: any) => (d.latest ? `latest: ${d.latest} (${d.latestDate})` : "none yet") },
+  kpi_ppa_checks: { label: "Checks Closed", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
+    sub: (d: any) => `${d.closed} of ${d.checks} checks${d.conditional ? ` · ${d.conditional} closed with a condition` : ""}` },
+  kpi_ppa_nc: { label: "Non-Conformities", tone: "amber", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.major} major · ${d.minor} minor` },
+  kpi_ppa_open: { label: "Open Non-Conformities", tone: "green", fmt: (d: any) => `${d.value}`, sub: (d: any) => `${d.closed} closed` },
 } as const;
 
 export function Kpi({ id, data }: { id: keyof typeof KPI; data: any }) {
@@ -132,8 +145,8 @@ const fmtQM = (v: { qty: number | null; mwp: number | null }) =>
   `${v.qty == null ? "—" : v.qty.toLocaleString()}${v.mwp == null ? "" : ` · ${v.mwp.toLocaleString(undefined, { maximumFractionDigits: 3 })} MWp`}`;
 
 const PILL: Record<string, string> = { OPEN: "nok", CLOSED: "ok", OK: "ok", NOK: "nok", WARN: "na", NA: "na", UNKNOWN: "na", MAJOR: "nok", MINOR: "na", CRITICAL: "nok",
-  PASS: "ok", FAIL: "nok", OVERDUE: "nok" };
-const PILL_KEYS = new Set(["status", "severity", "decision", "conclusion", "risk", "category"]);
+  PASS: "ok", FAIL: "nok", OVERDUE: "nok", READY: "ok", "NOT READY": "nok", "UNDER REVIEW": "na" };
+const PILL_KEYS = new Set(["status", "severity", "decision", "conclusion", "risk", "category", "result"]);
 
 /** Renders table cells: numbers, {qty,mwp} pairs, {bin: {qty,mwp}} maps and status/severity pills. */
 export function fmtCell(key: string, v: any): ReactNode {
