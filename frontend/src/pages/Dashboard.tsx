@@ -38,7 +38,7 @@ export default function Dashboard() {
       {dash.data && Object.keys(w).length === 0 && <div className="empty">All widgets are hidden. An administrator can enable them under Widgets &amp; Columns.</div>}
 
       <div className="kpis">
-        {(["kpi_containers", "kpi_modules", "kpi_capacity", "kpi_result"] as const).map((k) => has(k) && <Kpi key={k} id={k} data={w[k]} />)}
+        {(["kpi_capacity", "kpi_containers", "kpi_modules", "kpi_result"] as const).map((k) => has(k) && <Kpi key={k} id={k} data={w[k]} />)}
       </div>
       <div className="row two">
         {has("loading_trend") && <Panel title={WIDGET_TITLES.loading_trend}><TrendChart data={w.loading_trend} /></Panel>}

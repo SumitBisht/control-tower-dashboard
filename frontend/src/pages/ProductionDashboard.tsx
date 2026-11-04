@@ -53,7 +53,7 @@ export default function ProductionDashboard() {
         {(["kpi_output", "kpi_achievement", "kpi_rejected", "kpi_open_nc"] as const).map((k) => has(k) && <Kpi key={k} id={k} data={w[k]} />)}
       </div>
       <div className="row two">
-        {has("production_trend") && <Panel title={TITLES.production_trend}><TrendChart data={w.production_trend} /></Panel>}
+        {has("production_trend") && <Panel title={TITLES.production_trend}><TrendChart data={w.production_trend} grouped /></Panel>}
         {has("daily_production") && <Panel title={TITLES.daily_production}><DataTable data={w.daily_production} /></Panel>}
       </div>
       <div className="row two">

@@ -23,7 +23,7 @@ const KPI = {
   kpi_capacity: { label: "Total Capacity", tone: "amber", fmt: (d: any) => `${d.value.toLocaleString(undefined, { maximumFractionDigits: 3 })} MWp` },
   kpi_result: { label: "Inspection Result", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}% SUCCESS`) },
   // Production Supervision
-  kpi_output: { label: "Total Actual Output", tone: "blue", fmt: (d: any) => `${d.value.toLocaleString()} pcs`, sub: (d: any) => `${d.mwp} MWp` },
+  kpi_output: { label: "Total Actual Output", tone: "blue", fmt: (d: any) => `${d.mwp} MWp`, sub: (d: any) => `${d.value.toLocaleString()} pcs` },
   kpi_achievement: { label: "Plan Achievement", tone: "teal", fmt: (d: any) => (d.value == null ? "—" : `${d.value}%`),
     sub: (d: any) => `${d.actual.toLocaleString()} of ${d.planned.toLocaleString()} planned` },
   kpi_rejected: { label: "Rejected / Suspected", tone: "amber", fmt: (d: any) => `${d.value.toLocaleString()} pcs`,
@@ -53,8 +53,8 @@ const PALETTE = ["#17658f", "#5aa9ff", "#2e7d6b", "#e0a030", "#8a63d2"];
 
 interface TrendData { series: string[]; data: any[]; cumulative_data?: any[] }
 
-/** Stacked daily bars. If the server also sent `cumulative_data`, a toggle switches to cumulative lines (client-side, no extra request). */
-export function TrendChart({ data }: { data: TrendData }) {
+/** Daily bars, stacked (or side by side with `grouped`). If the server also sent `cumulative_data`, a toggle switches to cumulative lines (client-side, no extra request). */
+export function TrendChart({ data, grouped = false }: { data: TrendData; grouped?: boolean }) {
   const [view, setView] = useState<"daily" | "cumulative">("daily");
   if (!data.data.length) return <Empty />;
   const canToggle = !!data.cumulative_data;
@@ -85,7 +85,7 @@ export function TrendChart({ data }: { data: TrendData }) {
             <YAxis />
             <Tooltip />
             <Legend />
-            {data.series.map((s, i) => <Bar key={s} dataKey={s} stackId="a" fill={PALETTE[i % PALETTE.length]} />)}
+            {data.series.map((s, i) => <Bar key={s} dataKey={s} stackId={grouped ? undefined : "a"} fill={PALETTE[i % PALETTE.length]} />)}
           </BarChart>
         )}
       </ResponsiveContainer>
